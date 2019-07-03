@@ -1,0 +1,6 @@
+PWD /Users/tianyudu/Google Drive/Summer2019/Stanford Summer Session/CS229/Summer 2019/Problem Set/ps1/ps1/tex
+INPUT /usr/local/texlive/2016/texmf.cnf
+INPUT /usr/local/texlive/2016/texmf-dist/web2c/texmf.cnf
+INPUT /usr/local/texlive/2016/texmf-var/web2c/pdftex/latex.fmt
+INPUT ./Makefile
+OUTPUT Makefile.log

@@ -1,0 +1,12 @@
+# Fdb version 3
+["latex"] 1562048959 "./Makefile" "Makefile.dvi" "Makefile" 1562048959
+  "./Makefile" 1562005680 635 2b0ffe6a1e28dd927b75ea48ab7ed251 ""
+  "/usr/local/texlive/2016/texmf-dist/web2c/texmf.cnf" 1463093894 31953 b9489e6e586f798610c60aec1f5ec548 ""
+  "/usr/local/texlive/2016/texmf-var/web2c/pdftex/latex.fmt" 1463979179 3873335 7a18946cdce997e35c7a3602bb3b4632 ""
+  "/usr/local/texlive/2016/texmf.cnf" 1463979140 577 2938757e76f31531e65cc647e3507693 ""
+  "Makefile" 1562005680 635 2b0ffe6a1e28dd927b75ea48ab7ed251 ""
+  "Makefile.aux" 1562048959 8 a94a2480d3289e625eea47cd1b285758 ""
+  "ps${NUM}.tex" 0 -1 0 ""
+  (generated)
+  "Makefile.dvi"
+  "Makefile.log"

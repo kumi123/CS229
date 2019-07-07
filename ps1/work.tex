@@ -1,0 +1,236 @@
+\documentclass[11pt]{article}
+\usepackage{spikey}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{soul}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{chngcntr}
+\usepackage{centernot}
+\usepackage{datetime}
+\usepackage[shortlabels]{enumitem}
+
+\usepackage[margin=1truein]{geometry}
+\usepackage{setspace}
+\linespread{1.15}
+
+\counterwithin{equation}{section}
+\newcommand{\upi}[0]{^{(i)}}
+
+\title{CS229 Problem Set 1}
+\date{\today}
+\author{Tianyu Du}
+\begin{document}
+	\maketitle
+	\newpage
+	\section{Question 1: Linear Classifiers}
+	\subsection{Question 1(a)}
+	\begin{lemma}
+		\begin{equation}
+			g'(z) = g(z) \left(1-g(z)\right)
+		\end{equation}
+	\end{lemma}
+	
+	\begin{lemma} For every $x, z \in \R^n$,
+		\begin{equation}
+			\sum_i \sum_j z_i x_i z_j x_j = (x^T z)^2 \geq 0
+		\end{equation}
+	\end{lemma}
+	
+	\begin{align}
+		\nabla_\theta J(\theta) &= - \frac{1}{n} \sum_{i=1}^n \left(
+		y\upi \frac{g'(\theta^T x\upi)}{g(\theta^T x\upi)}
+		- (1 - y\upi) \frac{g'(\theta^T x\upi)}{1-g(\theta^T x\upi)}
+		\right) x\upi \\
+		&= - \frac{1}{n} \sum_{i=1}^n \left(
+		y\upi (1 - g(\theta^T x\upi)) - (1 - y\upi) g(\theta^T x\upi)
+		\right) x\upi \\
+		&= - \frac{1}{n} \sum_{i=1}^n \left(
+		y\upi - g(\theta^T x\upi)
+		\right ) x\upi \\
+		\implies \pd{J(\theta)}{\theta_j} &= - \frac{1}{n} \sum_{i=1}^n \left(
+		y\upi - g(\theta^T x\upi)
+		\right ) x\upi_j\ \forall j \in [d]\\
+		\implies \forall k \in [d],\ \frac{\partial^2 J(\theta)}{\partial \theta_j \partial \theta_k} &= -\frac{1}{n}\sum_{i=1}^n \left (
+		- g(\theta^T x\upi) (1-g(\theta^T x\upi)) x\upi_k
+		\right) x\upi_j \\
+		&= \frac{1}{n}\sum_{i=1}^n \left (
+		g(\theta^T x\upi) (1-g(\theta^T x\upi)) x\upi_j x\upi_k
+		\right)
+	\end{align}
+	Therefore, $H_J (\theta)$ can be constructed from the array of second order derivatives of $J(\theta)$ as 
+	\begin{equation}
+		H_J(\theta)_{j, k} := \frac{1}{n}\sum_{i=1}^n \left (
+		g(\theta^T x\upi) (1-g(\theta^T x\upi)) x\upi_j x\upi_k
+		\right)
+	\end{equation}
+	Notice that since $g(\theta^T x\upi) \in (0, 1)$, therefore $g(\theta^T x\upi) (1-g(\theta^T x\upi)) > 0$ for every $\theta$ and $x\upi$.
+	\begin{proof} Show that $H_J (\theta) \succeq 0$: let $z = (z_1,\dots,z_d) \in \R^d$, then
+		\begin{align}
+			z^T H_J (\theta) \in \R^{1 \times d}
+		\end{align}
+		Then the $\beta^{th}$ column of $z^T H_J (\theta)$ is
+		\begin{align}
+			z^T H_J (\theta)_{\beta} &= \frac{1}{n} \sum_{\alpha=1}^d \sum_{i=1}^n g(\theta^T x\upi) (1-g(\theta^T x\upi)) z_\alpha x\upi_\alpha x\upi_\beta
+		\end{align}
+		Therefore
+		\begin{align}
+			z^T H_J(\theta) z &= \frac{1}{n} \sum_{\beta=1}^d \sum_{\alpha=1}^d \sum_{i=1}^n g(\theta^T x\upi) (1-g(\theta^T x\upi)) z_\alpha x\upi_\alpha x\upi_\beta z_\beta \\
+			&= \frac{1}{n} \sum_{i=1}^n g(\theta^T x\upi) (1-g(\theta^T x\upi)) \sum_{\beta=1}^d \sum_{\alpha=1}^d z_\alpha x\upi_\alpha x\upi_\beta z_\beta \\
+			&= \frac{1}{n} \sum_{i=1}^n \underbrace{g(\theta^T x\upi) (1-g(\theta^T x\upi))}_{> 0\ \because g(\cdot) \in (0, 1)} \underbrace{(z^T x)^2}_{\geq 0} \geq 0
+		\end{align}
+		Hence, $H_J(\theta) \succeq 0$ is shown by showing $z^T H_J(\theta) z$ for every $z \in \R^d$.
+	\end{proof}
+	
+	\newpage
+	\subsection{Question 1(c)}
+	\begin{proof}
+		By Bayes' theorem,
+		\begin{align}
+			p(y=1|x; \phi, \mu_0, \mu_1, \Sigma) &= \frac{p(x|y=1; \phi, \mu_0, \mu_1, \Sigma) p(y=1; \phi, \mu_0, \mu_1, \Sigma)}{p(x;\phi, \mu_0, \mu_1, \Sigma)}
+		\end{align}
+		Define 
+		\begin{align}
+			z &:= \frac{p(x|y=1; \phi, \mu_0, \mu_1, \Sigma) p(y=1; \phi, \mu_0, \mu_1, \Sigma)}{p(x;\phi, \mu_0, \mu_1, \Sigma)} \\
+			\Theta &:= \{\phi, \mu_0, \mu_1, \Sigma\}
+		\end{align}
+		Conditioned on particular $x$, $y$ is either 0 or 1, therefore,
+		\begin{align}
+			p(y=0|x; \Theta) &= 1 - z \\
+			\implies \frac{z}{1-z} &= \frac{p(y=1|x; \Theta)}{p(y=0|x; \Theta)} \\
+			&= \frac{p(x|y=1; \Theta) p(y=1; \Theta)}{p(x|y=0; \Theta) p(y=0; \Theta)} \\
+			&= \frac{\phi}{1 - \phi} \frac{\exp\left(-\frac{1}{2} (x-\mu_1)^T \Sigma^{-1} (x - \mu_1)\right)}{\exp\left(-\frac{1}{2} (x-\mu_0)^T \Sigma^{-1} (x - \mu_0)\right)} \\
+			\implies \log \frac{z}{1-z} &= \log \frac{\phi}{1-\phi} \\
+			&+ \left (-\frac{1}{2} x^T \Sigma^{-1} x + \mu_1^T \Sigma^{-1} x - \frac{1}{2} \mu_1^T \Sigma^{-1} \mu_1 \right) \\
+			&- \left (-\frac{1}{2} x^T \Sigma^{-1} x + \mu_0^T \Sigma^{-1} x - \frac{1}{2} \mu_0^T \Sigma^{-1} \mu_0 \right) \\
+			&= \log \frac{\phi}{1-\phi} + \left (
+			(\mu_1 - \mu_0)^T \Sigma^{-1} x
+			+ \frac{1}{2} \mu_0^T \Sigma^{-1} \mu_0 - \frac{1}{2} \mu_1^T \Sigma^{-1} \mu_1
+			\right ) \\
+			\implies \frac{z}{1-z} &= \exp \underbrace{\left (
+			\log \frac{\phi}{1-\phi} + \left (
+			(\mu_1 - \mu_0)^T \Sigma^{-1} x
+			+ \frac{1}{2} \mu_0^T \Sigma^{-1} \mu_0 - \frac{1}{2} \mu_1^T \Sigma^{-1} \mu_1
+			\right )
+			\right )}_{=:\Delta} \\
+			\implies z &= \frac{\exp(\Delta)}{1+\exp(\Delta)} = \frac{1}{1+\exp(-\Delta)}
+		\end{align}
+		Therefore
+		\begin{align}
+			\frac{p(x|y=1; \phi, \mu_0, \mu_1, \Sigma) p(y=1; \phi, \mu_0, \mu_1, \Sigma)}{p(x;\phi, \mu_0, \mu_1, \Sigma)}
+			&= \frac{1}{1 + \exp(-(\theta^T x + \theta_0))}
+		\end{align}
+		where 
+		\begin{align}
+			\theta &= (\Sigma^{-1})^T (\mu_1 - \mu_0) \\
+			\theta_0 &= \log \frac{\phi}{1-\phi} + \frac{1}{2} \mu_0^T \Sigma^{-1} \mu_0 - \frac{1}{2} \mu_1^T \Sigma^{-1} \mu_1
+		\end{align}
+	\end{proof}
+	\newpage
+	\subsection{Question 1(d)}
+	\subsubsection{$\phi$}
+	\begin{proof}
+	\begin{align}
+		\pd{}{\phi} \ell (\phi, \cdot) &= \pd{}{\phi} \sum_{i=1}^n
+		\underbrace{\log p(x\upi|y\upi; \mu_0, \mu_1, \Sigma)}_{\perp \phi}
+		+ \log p(y\upi; \phi) \\
+		&= \pd{}{\phi} \sum_{i=1}^n \log p(y\upi; \phi) \\
+		&= \pd{}{\phi} \sum_{i=1}^n \log \phi^{y\upi} (1 - \phi)^{1 - y\upi} \\
+		&= \pd{}{\phi} \sum_{i=1}^n y\upi \log \phi + (1 - y\upi) \log (1 - \phi) \\
+		&= \sum_{i=1}^n y\upi \frac{1}{\phi} - (1 - y\upi) \frac{1}{1 - \phi}
+	\end{align}
+	The first order condition of maximizing likelihood becomes
+	\begin{align}
+		\sum_{i=1}^n y\upi \frac{1}{\phi} - (1 - y\upi) \frac{1}{1 - \phi} &= 0 \\
+		\implies \sum_{i=1} \frac{y\upi}{\phi} + \frac{y\upi}{1 - \phi} - \frac{1}{1 - \phi} &= 0 \\
+		\implies \sum_{i=1}^n y\upi \frac{1 - \phi + \phi}{\phi (1 - \phi)} - \frac{1}{1 - \phi} &= 0 \\
+		\implies \sum_{i=1}^n y\upi \frac{1}{\phi (1 - \phi)} &= n \frac{1}{1-\phi} \\
+		\implies \phi &= \frac{1}{n} \sum_{i=1}^n y\upi
+	\end{align}
+	\end{proof}
+	
+	\subsubsection{$\mu_0$}
+	\begin{proof}
+		\begin{align}
+			\pd{}{\mu_0} \ell(\mu_0, \cdot) &= \pd{}{\mu_0} \sum_{i=1}^n
+		\log p(x\upi|y\upi; \mu_0, \mu_1, \Sigma)
+		+ \underbrace{\log p(y\upi; \phi)}_{\perp \mu_0} \\
+		&= \pd{}{\mu_0} \sum_{i=1}^n \log p(x\upi|y\upi; \mu_0, \mu_1, \Sigma) \\
+		&= \pd{}{\mu_0} \sum_{i=1}^n \Big\{
+		\overbrace{
+		y\upi \log \left [ \frac{1}{(2\pi)^{d/2}|\Sigma|^{1/2}} \exp \left (-\frac{1}{2} (x\upi - \mu_1)^T \Sigma^{-1} (x\upi - \mu_1) \right) \right ]}^{\perp \mu_0} \\
+		&+ (1 - y\upi) \log \left [ \frac{1}{(2\pi)^{d/2}|\Sigma|^{1/2}} \exp \left (-\frac{1}{2} (x\upi - \mu_0)^T \Sigma^{-1} (x\upi - \mu_0) \right) \right ] \Big\} \\
+		&= \pd{}{\mu_0} \sum_{i=1}^n (1 - y\upi) \left (
+		\underbrace{\log \frac{1}{(2\pi)^{d/2}|\Sigma|^{1/2}}}_{\perp \mu_0}
+		-\frac{1}{2} (x\upi - \mu_0)^T \Sigma^{-1} (x\upi - \mu_0) \right) \\
+		&= \pd{}{\mu_0} (-1) \sum_{i=1}^n (1 - y\upi) \frac{1}{2} (x\upi - \mu_0)^T \Sigma^{-1} (x\upi - \mu_0) = 0 \\
+		&\implies \sum_{i=1}^n (1 - y\upi) \Sigma^{-1} (x\upi - \mu_0) = 0 \\ \\
+		&\implies \sum_{i=1}^n \Sigma^{-1} (1 - y\upi) x\upi = \sum_{i=1}^n \Sigma^{-1} (1 - y\upi) \mu_0 \\
+		& \implies \sum_{i=1}^n (1 - y\upi) x\upi = \sum_{i=1}^n (1 - y\upi) \mu_0 \\
+		& \implies \mu_0 = \frac{\sum_{i=1}^n (1 - y\upi) x\upi}{\sum_{i=1}^n (1 - y\upi)} = \frac{\sum_{i=1}^n \id{y\upi = 0} x\upi}{\sum_{i=1}^n \id{y\upi = 0}}
+	\end{align}
+	\end{proof}
+	
+	\subsubsection{$\mu_1$}
+	\begin{proof}
+		\begin{align}
+			\pd{}{\mu_1} \ell(\mu_1, \cdot) &= \pd{}{\mu_1} \sum_{i=1}^n
+		\log p(x\upi|y\upi; \mu_0, \mu_1, \Sigma)
+		+ \underbrace{\log p(y\upi; \phi)}_{\perp \mu_1} \\
+		&= \pd{}{\mu_1} \sum_{i=1}^n \log p(x\upi|y\upi; \mu_0, \mu_1, \Sigma) \\
+		&= \pd{}{\mu_1} \sum_{i=1}^n \Big\{
+		y\upi \log \left [ \frac{1}{(2\pi)^{d/2}|\Sigma|^{1/2}} \exp \left (-\frac{1}{2} (x\upi - \mu_1)^T \Sigma^{-1} (x\upi - \mu_1) \right) \right ] \\
+		&+\underbrace{ (1 - y\upi) \log \left [ \frac{1}{(2\pi)^{d/2}|\Sigma|^{1/2}} \exp \left (-\frac{1}{2} (x\upi - \mu_0)^T \Sigma^{-1} (x\upi - \mu_0) \right) \right ]}_{\perp \mu_1}
+		\Big\} \\
+		&= \pd{}{\mu_1} \sum_{i=1}^n y\upi \left (
+		\underbrace{\log \frac{1}{(2\pi)^{d/2}|\Sigma|^{1/2}}}_{\perp \mu_1}
+		-\frac{1}{2} (x\upi - \mu_1)^T \Sigma^{-1} (x\upi - \mu_1) \right) \\
+		&= \pd{}{\mu_1} (-1) \sum_{i=1}^n y\upi \frac{1}{2} (x\upi - \mu_1)^T \Sigma^{-1} (x\upi - \mu_1) = 0 \\
+		&\implies \sum_{i=1}^n y\upi \Sigma^{-1} (x\upi - \mu_1) = 0 \\
+		&\implies \sum_{i=1}^n \Sigma^{-1} y\upi x\upi = \sum_{i=1}^n \Sigma^{-1} y\upi \mu_1 \\
+		& \implies \sum_{i=1}^n y\upi x\upi = \sum_{i=1}^n y\upi \mu_1 \\
+		& \implies \mu_1 = \frac{\sum_{i=1}^n y\upi x\upi}{\sum_{i=1}^n y\upi} = \frac{\sum_{i=1}^n \id{y\upi = 1} x\upi}{\sum_{i=1}^n \id{y\upi = 1}}
+	\end{align}
+	\end{proof}
+	
+	\subsubsection{$\Sigma^{-1}$}
+	\begin{proof}
+		\hl{TODO}
+	\end{proof}
+	
+	\newpage
+	\section{Question 2: Incomplete, Positive-Only Labels}
+	\subsection{Question 2(c)}
+	\begin{proof}
+		\begin{align}
+			p(t\upi=1 | y\upi=1, x\upi) &= \frac{p(y\upi=1|t\upi=1,x\upi)p(t\upi=1,x\upi)}{p(y\upi=1,x\upi)} \\
+			&= \frac{
+				p(y\upi=1|t\upi=1,x\upi)p(t\upi=1,x\upi)
+			}{
+				p(y\upi=1|t\upi=1,x\upi)p(t\upi=1,x\upi)
+				+ p(y\upi=1|t\upi=0,x\upi)p(t\upi=0,x\upi)
+			} \\
+			&= \frac{
+				\alpha p(t\upi=1,x\upi)
+			}{
+				\alpha p(t\upi=1,x\upi) + 0p(t\upi=0,x\upi)
+			} \\
+			&= \frac{
+				\alpha p(t\upi=1,x\upi)
+			}{
+				\alpha p(t\upi=1,x\upi)
+			}=1
+		\end{align}
+	\end{proof}
+\end{document}
+
+
+
+
+
+
+
+
+

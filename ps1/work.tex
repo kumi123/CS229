@@ -205,25 +205,164 @@
 	\subsection{Question 2(c)}
 	\begin{proof}
 		\begin{align}
-			p(t\upi=1 | y\upi=1, x\upi) &= \frac{p(y\upi=1|t\upi=1,x\upi)p(t\upi=1,x\upi)}{p(y\upi=1,x\upi)} \\
+			p(t\upi=1 | y\upi=1, x\upi) &= \frac{p(y\upi=1|t\upi=1,x\upi)p(t\upi=1|x\upi)}{p(y\upi=1|x\upi)} \\
 			&= \frac{
-				p(y\upi=1|t\upi=1,x\upi)p(t\upi=1,x\upi)
+				p(y\upi=1|t\upi=1,x\upi)p(t\upi=1|x\upi)
 			}{
-				p(y\upi=1|t\upi=1,x\upi)p(t\upi=1,x\upi)
-				+ p(y\upi=1|t\upi=0,x\upi)p(t\upi=0,x\upi)
+				p(y\upi=1|t\upi=1,x\upi)p(t\upi=1|x\upi)
+				+ p(y\upi=1|t\upi=0,x\upi)p(t\upi=0|x\upi)
 			} \\
 			&= \frac{
-				\alpha p(t\upi=1,x\upi)
+				\alpha p(t\upi=1|x\upi)
 			}{
-				\alpha p(t\upi=1,x\upi) + 0p(t\upi=0,x\upi)
+				\alpha p(t\upi=1|x\upi) + 0p(t\upi=0|x\upi)
 			} \\
 			&= \frac{
-				\alpha p(t\upi=1,x\upi)
+				\alpha p(t\upi=1|x\upi)
 			}{
-				\alpha p(t\upi=1,x\upi)
+				\alpha p(t\upi=1|x\upi)
 			}=1
 		\end{align}
 	\end{proof}
+	
+	\newpage
+	
+	\subsection{Question 2(d)}
+	\begin{proof}
+		\begin{align}
+			p(t\upi=1|x\upi) &= p(t\upi, y\upi=1|x\upi) + p(t\upi=1, y\upi=0|x\upi) \\
+			&= p(t\upi=1|y\upi=1, x\upi) p(y\upi=1|x\upi) \\
+			&+ p(y\upi=0|t\upi=1, x\upi) p(t\upi=1|x\upi) \\
+			&= 1 p(y\upi=1|x\upi) + (1-\alpha) p(t\upi=1|x\upi) \\
+			\implies p(t\upi=1|x\upi) &= \frac{1}{\alpha} p(y\upi=1|x\upi)
+		\end{align}
+	\end{proof}
+	
+	\newpage
+	
+	\subsection{Question 2(e)}
+	\begin{proof}
+		\begin{align}
+			h(x\upi) &= p(y\upi = 1|x\upi) \\
+			\implies \expect{h(x\upi)|y\upi=1} &= \expect{p(y\upi = 1|x\upi)|y\upi=1} \\
+			&= \mathbb{E}\{
+			p(y\upi = 1|t\upi=1, x\upi) p(t\upi=1|x\upi) \\
+			&+ p(y\upi = 1|t\upi=0, x\upi) p(t\upi=0|x\upi)
+			|y\upi=1
+			\} \\
+			&= \expect{\alpha p(t\upi=1|x\upi) + 0|y\upi = 1} \\
+			&= \alpha \expect{p(t\upi=1|x\upi)|y\upi=1}
+		\end{align}
+		From part (c), we proved that given $y\upi=1$, $t\upi=1$ with probability 1, conditioned on $x\upi$. Hence,
+		\begin{align}
+			\expect{p(t\upi=1|x\upi)|y\upi=1} &= 1 \\
+			\implies \expect{h(x\upi)|y\upi=1} &= \alpha
+		\end{align}
+	\end{proof}
+	
+	\newpage
+	
+	\section{Question 3: Poisson Regression}
+	\subsection{Question 3(a)}
+	\begin{proof}
+		\begin{align}
+			p(y; \lambda) &= \frac{\exp(-\lambda) \lambda^y}{y!} \\
+			&= \exp \log (\frac{\exp(-\lambda) \lambda^y}{y!}) \\
+			&= \exp \left (
+				- \lambda + y \log (\lambda) - \log(y!)
+			\right ) \\
+			&= \frac{1}{y!} \exp(\log(\lambda) y - \lambda)
+		\end{align}
+		therefore, Poisson distribution belongs to the exponential family with
+		\begin{align}
+			b(y) &:= \frac{1}{y!} \\
+			\eta(\lambda) &:= \log(\lambda) \\
+			T(y) &:= y \\
+			a(\eta) &:= \exp(\eta) = \lambda
+		\end{align}
+	\end{proof}
+	\newpage
+	
+	\subsection{Question 3(b)}
+	\begin{proof}[Answer.]
+	\par By definition, the canonical response function maps $\eta$ to the expectation $\expect{T(y); \eta}$, which equals $\expect{y; \eta} = \lambda$ here. Based on the fact that $\eta(\lambda) = \log(\lambda)$, the \ul{exponential} function maps $\eta(\lambda)$ to $\expect{y; \eta}$. Hence, the canonical response function here is the exponential function.
+	\end{proof}
+	
+	\subsection{Question 3(c)}
+	\begin{proof}[Derive.]
+	\begin{align}
+		\pd{}{\theta_j} \log (p(y\upi|x\upi; \theta)) &= \pd{}{\theta_j} 
+		\left (\log(b(y)) + \eta^T y\upi - a(\eta) \right )\\
+		&= \pd{}{\theta_j} \left (
+		\theta^T x\upi y\upi - \exp(\theta^T x\upi)
+		\right ) \\
+		&= x\upi_j y\upi - \exp(\theta^T x\upi) x\upi_j \\
+		&= \left(y\upi - \exp(\theta^T x\upi )\right) x\upi_j
+	\end{align}
+	The stochastic gradient ascent update rule for parameter $\theta_j$ is 
+	\begin{align}
+		\theta_j \leftarrow \theta_j + \alpha \left(y\upi - \exp(\theta^T x\upi )\right) x\upi_j
+	\end{align}
+	where $(x\upi, y\upi)$ is the randomly selected sample, and $\alpha > 0$ denotes the learning rate.
+	\end{proof}
+	
+	\newpage
+	\section{Question 4: Convexity of Generalized Linear Models}
+	\subsection{Question 4(a)}
+	\begin{proof}
+		The mean of $y$ is simply
+		\begin{align}
+			\expect{Y;\eta} &= \int_\R y p(y; \eta)\ dy \\
+			&= \int_\R y b(y) \exp(\eta y - a(\eta))\ dy
+		\end{align}
+		By definition of probability measure, it must be the case that 
+		\begin{align}
+			\int_\R p(y; \eta)\ dy &= 1
+		\end{align}
+		for every valid $\eta$. Therefore,
+		\begin{align}
+			\int_\R b(y) \exp(\eta y - a(\eta))\ dy &= 1 \\
+			\implies \int_\R b(y) \exp(\eta y) \frac{1}{\exp(a(\eta))}\ dy &= 1 \\
+			\implies \int_\R b(y) \exp(\eta y)\ dy &= \exp(a(\eta)) \\
+			\implies \pd{\exp(a(\eta))}{\eta} &= \pd{}{\eta} \int_\R b(y) \exp(\eta y)\ dy \\
+			\implies a'(\eta) \exp(a(\eta)) &= \int_\R b(y) \pd{\exp(\eta y)}{\eta}\ dy \\
+			\implies a'(\eta) &= \int_\R y b(y) \exp(\eta y) \frac{1}{\exp(a(\eta))}\ dy \\
+			\implies a'(\eta) &= \int_\R y b(y) \exp(\eta y - a(\eta))\ dy \\
+			&= \expect{Y;\eta}
+		\end{align}
+	\end{proof}
+	
+	\newpage
+	\subsection{Question 4(b)}
+	\begin{proof}
+		From part (a),
+		\begin{align}
+			a'(\eta) &= \int_\R y b(y) \exp(\eta y - a(\eta))\ dy \\
+			\implies \frac{\partial^2 a(\eta)}{\partial \eta^2} &= \pd{}{\eta} \int_\R y b(y) \exp(\eta y - a(\eta))\ dy \\
+			&= \int_\R y b(y) \exp(ny - a(\eta)) \left (
+				y - a'(\eta)
+			\right)\ dy \\
+			&= \int_\R y^2 b(y) \exp(ny - a(\eta))\ dy - a'(\eta) \int_\R y b(y) \exp(ny - a(\eta))\ dy \\
+			&= \expect{Y^2; \eta} - a'(\eta) \expect{Y; \eta} \\
+			&= \expect{Y^2; \eta} - \expect{Y; \eta}^2 \\
+			&= \var{Y; \eta}
+		\end{align}
+	\end{proof}
+	
+	\newpage
+	\subsection{Question 4(c)}
+	\begin{proof}
+		
+	\end{proof}
+	
+	\newpage
+	\section{Question 5: Linear Regression}
+	\subsection{Question 5(a)}
+	\begin{align}
+		J(\theta) &:= \frac{1}{2} \sum_{i=1}^n \left(y\upi - \theta^T \phi(x\upi) \right)^2 \\
+		\theta &\leftarrow \theta + \alpha \sum_{i=1}^n \left(y\upi - \theta^T \hat{x}\upi \right) \hat{x}\upi
+	\end{align}
+	where $\alpha$ denotes the learning rate.
 \end{document}
 
 

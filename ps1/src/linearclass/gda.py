@@ -55,7 +55,7 @@ class GDA:
         # *** START CODE HERE ***
         n, d = x.shape  # Get the shape
         if self.theta is None:
-            self.theta = [np.zeros(1), np.zeros(d, 1)]
+            self.theta = [np.zeros(1), np.zeros([d, 1])]
         # Find phi, mu_0, mu_1, and sigma
         self.phi = np.mean(y)
         self.mu_0 = np.mean(x[y == 0], axis=0).reshape(d, 1)
@@ -77,6 +77,7 @@ class GDA:
         )
         print("Theta 0 shape: ", self.theta[0].shape)
         self.theta[1] = np.matmul(np.linalg.inv(self.sigma).T, (self.mu_1 - self.mu_0))
+        print("Theta 1 shape: ", self.theta[1].shape)
         # *** END CODE HERE ***
 
     def predict(self, x):

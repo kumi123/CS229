@@ -28,6 +28,10 @@ def main(lr, train_path, eval_path, save_path):
     plt.xlabel("True Count")
     plt.ylabel("Predicted Expected Count")
 
+    l = np.array([min(y_val), max(y_val)])
+    plt.plot(l, l, alpha=0.6, color="red")
+    plt.legend(["Prediction", "45-degree Line"])
+
     image_path = save_path[:-3] + "png"
     plt.savefig(image_path)
     # *** END CODE HERE ***

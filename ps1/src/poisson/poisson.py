@@ -17,7 +17,19 @@ def main(lr, train_path, eval_path, save_path):
 
     # *** START CODE HERE ***
     # Fit a Poisson Regression model
+    model = PoissonRegression(step_size=lr)
+    model.fit(x_train, y_train)
     # Run on the validation set, and use np.savetxt to save outputs to save_path
+    x_val, y_val = util.load_dataset(eval_path, add_intercept=True)
+    pred_val = model.predict(x_val)
+    np.savetxt(save_path, pred_val)
+
+    plt.scatter(x=y_val, y=pred_val)
+    plt.xlabel("True Count")
+    plt.ylabel("Predicted Expected Count")
+
+    image_path = save_path[:-3] + "png"
+    plt.savefig(image_path)
     # *** END CODE HERE ***
 
 

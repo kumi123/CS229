@@ -86,7 +86,7 @@ class LogisticRegression:
         print(f"Newton's method converges after {step} epochs.")
         # *** END CODE HERE ***
 
-    def predict(self, x):
+    def predict(self, x) -> np.array:
         """Make a prediction given new inputs x.
 
         Args:
@@ -96,6 +96,10 @@ class LogisticRegression:
             Outputs of shape (n_examples,).
         """
         # *** START CODE HERE ***
+        def g(z): return 1 / (1 + np.exp(-z))
+        prob = g(np.matmul(x, self.theta))
+        assert prob.shape == (x.shape[0],)
+        return prob
         # *** END CODE HERE ***
 
 if __name__ == '__main__':

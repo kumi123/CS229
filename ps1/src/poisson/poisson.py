@@ -2,6 +2,7 @@ import numpy as np
 import util
 import matplotlib.pyplot as plt
 
+
 def main(lr, train_path, eval_path, save_path):
     """Problem: Poisson regression with gradient ascent.
 

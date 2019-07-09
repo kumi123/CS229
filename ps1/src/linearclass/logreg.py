@@ -78,7 +78,7 @@ class LogisticRegression:
             h = hessian(x, y)
             assert h.shape == (d, d)
             new_theta = self.theta - np.matmul(np.linalg.inv(h), nabla)
-            assert new_theta.shape == self.theta
+            assert new_theta.shape == self.theta.shape
             # update
             delta = np.linalg.norm(new_theta - self.theta)
             self.theta = new_theta

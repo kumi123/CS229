@@ -90,6 +90,12 @@ class GDA:
             Outputs of shape (n_examples,).
         """
         # *** START CODE HERE ***
+        n, d = x.shape
+
+        def g(z): return 1 / (1 + np.exp(-z))
+        z = np.matmul(x, self.theta[1]) + (np.ones([n, 1]) * self.theta[0])
+        prob = g(z).reshape(n,)
+        return prob
         # *** END CODE HERE
 
 if __name__ == '__main__':

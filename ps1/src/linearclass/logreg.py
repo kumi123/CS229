@@ -52,6 +52,8 @@ class LogisticRegression:
         """
         # *** START CODE HERE ***
         n, d = x.shape
+        if self.theta is None:
+            self.theta = np.zeros(d)
 
         def g(z): return 1 / (1 + np.exp(-z))
 

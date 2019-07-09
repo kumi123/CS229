@@ -43,7 +43,7 @@ class LogisticRegression:
         self.eps = eps
         self.verbose = verbose
 
-    def fit(self, x, y):
+    def fit(self, x, y) -> None:
         """Run Newton's Method to minimize J(theta) for logistic regression.
 
         Args:

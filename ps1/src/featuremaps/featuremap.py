@@ -7,6 +7,7 @@ np.seterr(all='raise')
 
 factor = 2.0
 
+
 class LinearModel(object):
     """Base class for linear models."""
 
@@ -26,6 +27,10 @@ class LinearModel(object):
             y: Training example labels. Shape (n_examples,).
         """
         # *** START CODE HERE ***
+        self.theta = np.linalg.solve(
+            np.matmul(X.T, X),
+            np.matmul(X.T, y)
+        )
         # *** END CODE HERE ***
 
     def create_poly(self, k, X):

@@ -64,6 +64,26 @@ class LogisticRegression:
                         g(np.matmul(x, self.theta)) * (1 - g(np.matmul(x, self.theta))) * x[:, i] * x[:, j]
                     )
             return h
+
+        delta = np.inf  # change in parameter to determine convergence.
+        step = 0  # iteration
+        while delta >= self.eps and step < self.max_iter:
+            nabla = np.zeros(d)
+            for i in range(d):
+                nabla[i] = - np.mean(
+                    (y - g(np.matmul(x, self.theta))) * x[:, i]
+                )
+            h = hessian(x, y)
+            assert h.shape == (d, d)
+            new_theta = self.theta - np.matmul(np.linalg.inv(h), nabla)
+            assert new_theta.shape == self.theta
+            # update
+            delta = np.linalg.norm(new_theta - self.theta)
+            self.theta = new_theta
+            if self.verbose:
+                print(f"Newton's method epoch {step}: parameter change: {delta}.")
+            step += 1
+        print(f"Newton's method converges after {step} epochs.")
         # *** END CODE HERE ***
 
     def predict(self, x):

@@ -54,6 +54,27 @@ class PoissonRegression:
             y: Training example labels. Shape (n_examples,).
         """
         # *** START CODE HERE ***
+        n, d = x.shape
+        if self.theta is None:
+            self.theta = np.zeros(d)
+        
+        delta = np.inf  # change in param to determine convergence.
+        step = 0
+        # Stochastic gradient ascent:
+        while delta >= self.eps and step < self.max_iter:
+            seq = np.array(range(n))
+            np.random.shuffle(seq)  # The index of SGA.
+            old_theta = self.theta.copy()
+            for i in seq:
+                xi, yi = x[i, :], y[i]
+                assert xi.shape == self.theta.shape
+                pred = np.exp(np.dot(self.theta, xi))
+                self.theta += self.step_size * (yi - pred) * xi
+            delta = np.linalg.norm(self.theta - old_theta)
+            if self.verbose:
+                print(f"SGAscent epoch {step}: parameter change: {delta}. ")
+            step += 1
+        print(f"SGAscent converges after {step} epochs.")
         # *** END CODE HERE ***
 
     def predict(self, x):

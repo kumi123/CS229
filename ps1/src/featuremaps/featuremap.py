@@ -114,7 +114,7 @@ def run_exp(train_path, sine=False, ks=[1, 2, 3, 5, 10, 20], filename='plot.png'
         Here plot_y are the predictions of the linear model on the plot_x data
         '''
         plt.ylim(-2, 2)
-        plt.plot(plot_x[:, 1], plot_y, label='k=%d' % k)
+        plt.plot(plot_x[:, 1], plot_y, label='k=%d' % k, alpha=0.6)
 
     plt.legend()
     plt.savefig(filename)

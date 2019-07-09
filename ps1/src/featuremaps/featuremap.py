@@ -43,6 +43,9 @@ class LinearModel(object):
             X: Training example inputs. Shape (n_examples, 2).
         """
         # *** START CODE HERE ***
+        raw = X[:, 1].reshape(-1, 1)  # (n_examples, 1)
+        features = np.concatenate([raw ** i for i in range(k + 1)])
+        assert features.shape == (len(raw), k+1)
         # *** END CODE HERE ***
 
     def create_sin(self, k, X):

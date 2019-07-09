@@ -112,7 +112,7 @@ class PoissonRegression:
         # *** END CODE HERE ***
 
 if __name__ == '__main__':
-    main(lr=1e-5,
+    main(lr=1e-6*3,
         train_path='train.csv',
         eval_path='valid.csv',
         save_path='poisson_pred.txt')

@@ -126,9 +126,19 @@ def main(train_path, small_path, eval_path):
     Run all expetriments
     '''
     # *** START CODE HERE ***
+    # (b) poly, k=3
+    run_exp(train_path, sine=False, ks=[3], filename="5b.png")
+    # (c) poly, k=[3, 5, 10, 20]
+    run_exp(train_path, sine=False, ks=[3, 5, 10, 20], filename="5c.png")
+    # (d) poly+sine, k=[0, 1, 2, 3, 5, 10, 20]
+    run_exp(train_path, sine=True, ks=[0, 1, 2, 3, 5, 10, 20], filename="5d.png")
+    # (e) small dataset, poly, k=[1, 2, 5, 10, 20]
+    run_exp(small_path, sine=False, ks=[1, 2, 5, 10, 20], filename="5e.png")
     # *** END CODE HERE ***
 
 if __name__ == '__main__':
-    main(train_path='train.csv',
+    main(
+        train_path='train.csv',
         small_path='small.csv',
-        eval_path='test.csv')
+        eval_path='test.csv'
+    )

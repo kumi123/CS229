@@ -11,7 +11,7 @@ def main(train_path, valid_path, save_path):
         save_path: Path to save predicted probabilities using np.savetxt().
     """
     x_train, y_train = util.load_dataset(train_path, add_intercept=True)
-
+  
     # *** START CODE HERE ***
     # Train a logistic regression classifier
     # Plot decision boundary on top of validation set set
@@ -51,6 +51,19 @@ class LogisticRegression:
             y: Training example labels. Shape (n_examples,).
         """
         # *** START CODE HERE ***
+        n, d = x.shape
+
+        def g(z): return 1 / (1 + np.exp(-z))
+
+        def hessian(x, y):
+            """A helper function to compute the hessian"""
+            h = np.zeros([d, d])
+            for i in range(d):
+                for j in range(d):
+                    h[i][j] = 1/n * np.sum(
+                        g(np.matmul(x, self.theta)) * (1 - g(np.matmul(x, self.theta))) * x[:, i] * x[:, j]
+                    )
+            return h
         # *** END CODE HERE ***
 
     def predict(self, x):

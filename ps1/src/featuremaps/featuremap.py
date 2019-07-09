@@ -61,7 +61,7 @@ class LinearModel(object):
         poly = self.create_poly(k, X)
         sin = np.sin(X[:, 1].reshape(-1, 1))
         features = np.concatenate([poly, sin], axis=1)
-        assert features.shape == (len(x), k+2)
+        assert features.shape == (len(X), k+2)
         return features
         # *** END CODE HERE ***
 

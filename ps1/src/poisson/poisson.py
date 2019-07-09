@@ -87,6 +87,12 @@ class PoissonRegression:
             Floating-point prediction for each input, shape (n_examples,).
         """
         # *** START CODE HERE ***
+        n, d = x.shape
+        eta = np.matmul(x, theta)
+        # The canonical response function is exp.
+        pred = np.exp(eta)
+        assert pred.shape == (n,)
+        return pred
         # *** END CODE HERE ***
 
 if __name__ == '__main__':

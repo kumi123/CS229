@@ -33,7 +33,7 @@ class LinearModel(object):
         )
         # *** END CODE HERE ***
 
-    def create_poly(self, k, X):
+    def create_poly(self, k, X) -> np.array:
         """
         Generates a polynomial feature map using the data x.
         The polynomial map should have powers from 0 to k
@@ -44,7 +44,7 @@ class LinearModel(object):
         """
         # *** START CODE HERE ***
         raw = X[:, 1].reshape(-1, 1)  # (n_examples, 1)
-        features = np.concatenate([raw ** i for i in range(k + 1)])
+        features = np.concatenate([raw ** i for i in range(k + 1)], axis=1)
         assert features.shape == (len(raw), k+1)
         return features
         # *** END CODE HERE ***

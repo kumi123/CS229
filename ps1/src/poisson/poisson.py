@@ -57,7 +57,7 @@ class PoissonRegression:
         n, d = x.shape
         if self.theta is None:
             self.theta = np.zeros(d)
-        
+
         delta = np.inf  # change in param to determine convergence.
         step = 0
         # Stochastic gradient ascent:

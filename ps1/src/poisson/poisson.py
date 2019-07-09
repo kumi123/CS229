@@ -24,6 +24,7 @@ def main(lr, train_path, eval_path, save_path):
     pred_val = model.predict(x_val)
     np.savetxt(save_path, pred_val)
 
+    # Plot the result
     plt.scatter(x=y_val, y=pred_val)
     plt.xlabel("True Count")
     plt.ylabel("Predicted Expected Count")

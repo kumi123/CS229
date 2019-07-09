@@ -11,11 +11,20 @@ def main(train_path, valid_path, save_path):
         save_path: Path to save predicted probabilities using np.savetxt().
     """
     x_train, y_train = util.load_dataset(train_path, add_intercept=True)
-  
     # *** START CODE HERE ***
     # Train a logistic regression classifier
+    model = LogisticRegression()
+    model.fit(x_train, y_train)
     # Plot decision boundary on top of validation set set
+    x_val, y_val = util.load_dataset(valid_path, add_intercept=True)
+    image_path = save_path[:-3] + "png"
+    util.plot(
+        x=x_val, y=y_val,
+        theta=model.theta, save_path=image_path
+    )
     # Use np.savetxt to save predictions on eval set to save_path
+    prob_val = model.predict(x_val)
+    np.savetxt(save_path, prob_val)
     # *** END CODE HERE ***
 
 

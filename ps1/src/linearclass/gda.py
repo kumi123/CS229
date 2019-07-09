@@ -15,8 +15,21 @@ def main(train_path, valid_path, save_path):
 
     # *** START CODE HERE ***
     # Train a GDA classifier
+    model = GDA()
+    model.fit(x_train, y_train)
     # Plot decision boundary on validation set
+    x_val, y_val = util.load_dataset(valid_path, add_intercept=False)
+    image_path = save_path[:-3] + "png"
+    theta = np.concatenate(model.theta)
+    assert theta.shape == (x_val.shape[1]+1, 1)
+    util.plot(
+        x=x_val, y=y_val,
+        theta=theta,
+        save_path=image_path
+    )
     # Use np.savetxt to save outputs from validation set to save_path
+    prob_val = model.predict(x_val)
+    np.savetxt(save_path, prob_val)
     # *** END CODE HERE ***
 
 

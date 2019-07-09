@@ -53,8 +53,30 @@ class GDA:
             y: Training example labels. Shape (n_examples,).
         """
         # *** START CODE HERE ***
+        n, d = x.shape  # Get the shape
+        if self.theta is None:
+            self.theta = [np.zeros(1), np.zeros(d, 1)]
         # Find phi, mu_0, mu_1, and sigma
+        self.phi = np.mean(y)
+        self.mu_0 = np.mean(x[y == 0], axis=0).reshape(d, 1)
+        self.mu_1 = np.mean(x[y == 1], axis=0).reshape(d, 1)
+        self.mu = [self.mu_0, self.mu_1]
+        total = np.zeros([d, d])
+        for i in range(n):
+            c = x[i, :].reshape(d, 1) - self.mu[int(y[i])]
+            total += np.matmul(c, c.T)
+        self.sigma = total / n
         # Write theta in terms of the parameters
+        # theta_0
+        self.theta[0] = np.log(self.phi / (1 - self.phi)) + 0.5 * np.matmul(
+            np.matmul(self.mu_0.T, np.linalg.inv(self.sigma)),
+            self.mu_0
+        ) - 0.5 * np.matmul(
+            np.matmul(self.mu_1.T, np.linalg.inv(self.sigma)),
+            self.mu_1
+        )
+        print("Theta 0 shape: ", self.theta[0].shape)
+        self.theta[1] = np.matmul(np.linalg.inv(self.sigma).T, (self.mu_1 - self.mu_0))
         # *** END CODE HERE ***
 
     def predict(self, x):

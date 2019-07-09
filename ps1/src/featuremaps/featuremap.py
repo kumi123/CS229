@@ -49,7 +49,7 @@ class LinearModel(object):
         return features
         # *** END CODE HERE ***
 
-    def create_sin(self, k, X):
+    def create_sin(self, k, X) -> np.array:
         """
         Generates a sin with polynomial featuremap to the data x.
         Output should be a numpy array whose shape is (n_examples, k+2)
@@ -58,6 +58,11 @@ class LinearModel(object):
             X: Training example inputs. Shape (n_examples, 2).
         """
         # *** START CODE HERE ***
+        poly = self.create_poly(k, X)
+        sin = np.sin(X[:, 1].reshape(-1, 1))
+        features = np.concatenate([poly, sin], axis=1)
+        assert features.shape == (len(x), k+2)
+        return features
         # *** END CODE HERE ***
 
     def predict(self, X):

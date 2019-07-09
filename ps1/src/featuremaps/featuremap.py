@@ -65,7 +65,7 @@ class LinearModel(object):
         return features
         # *** END CODE HERE ***
 
-    def predict(self, X):
+    def predict(self, X) -> np.array:
         """
         Make a prediction given new inputs x.
         Returns the numpy array of the predictions.
@@ -77,6 +77,11 @@ class LinearModel(object):
             Outputs of shape (n_examples,).
         """
         # *** START CODE HERE ***
+        n, d = X.shape
+        assert d == len(self.theta)
+        pred = np.matmul(X, self.theta)
+        assert pred.shape == (n,)
+        return pred
         # *** END CODE HERE ***
 
 

@@ -86,7 +86,7 @@ class LinearModel(object):
 
 
 def run_exp(train_path, sine=False, ks=[1, 2, 3, 5, 10, 20], filename='plot.png'):
-    train_x,train_y=util.load_dataset(train_path,add_intercept=True)
+    train_x, train_y = util.load_dataset(train_path, add_intercept=True)
     plot_x = np.ones([1000, 2])
     plot_x[:, 1] = np.linspace(-factor*np.pi, factor*np.pi, 1000)
     plt.figure()

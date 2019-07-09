@@ -100,7 +100,7 @@ class PoissonRegression:
         """
         # *** START CODE HERE ***
         n, d = x.shape
-        eta = np.matmul(x, theta)
+        eta = np.matmul(x, self.theta)
         # The canonical response function is exp.
         pred = np.exp(eta)
         assert pred.shape == (n,)

@@ -97,6 +97,18 @@ def run_exp(train_path, sine=False, ks=[1, 2, 3, 5, 10, 20], filename='plot.png'
         Our objective is to train models and perform predictions on plot_x data
         '''
         # *** START CODE HERE ***
+        model = LinearModel()  # Create model
+        # Apply feature mappings
+        if sine:
+            train_features = model.create_sin(k, train_x)
+            plot_features = model.create_sin(k, plot_x)
+        else:
+            train_features = model.create_poly(k, train_x)
+            plot_features = model.create_poly(k, plot_x)
+        # Fit model
+        model.fit(train_features, train_y)
+        # Make predictions
+        plot_y = model.predict(plot_features)
         # *** END CODE HERE ***
         '''
         Here plot_y are the predictions of the linear model on the plot_x data

@@ -60,7 +60,7 @@ class LogisticRegression:
             h = np.zeros([d, d])
             for i in range(d):
                 for j in range(d):
-                    h[i][j] = 1/n * np.sum(
+                    h[i][j] = np.mean(
                         g(np.matmul(x, self.theta)) * (1 - g(np.matmul(x, self.theta))) * x[:, i] * x[:, j]
                     )
             return h

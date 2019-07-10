@@ -31,6 +31,9 @@ def main(train_path, valid_path, test_path, save_path):
     output_path_adjusted = save_path.replace(WILDCARD, 'adjusted')
 
     # *** START CODE HERE ***
+
+    def image_path(path): return path[:-3] + "png"
+
     # Part (a): Train and test on true labels
     # Make sure to save predicted probabilities to output_path_true using np.savetxt()
     # Part (b): Train on y-labels and test on true labels

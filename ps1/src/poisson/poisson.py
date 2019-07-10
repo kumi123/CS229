@@ -77,21 +77,17 @@ class PoissonRegression:
 
         delta = np.inf  # change in param to determine convergence.
         step = 0
-        # Stochastic gradient ascent:
+        # Gradient ascent:
         while delta >= self.eps and step < self.max_iter:
-            seq = np.array(range(n))
-            np.random.shuffle(seq)  # The index of SGA.
             old_theta = self.theta.copy()
-            for i in seq:
-                xi, yi = x[i, :], y[i]
-                assert xi.shape == self.theta.shape
-                pred = np.exp(np.dot(self.theta, xi))
-                self.theta += self.step_size * (yi - pred) * xi
+            pred = np.exp(np.matmul(x, self.theta))  # prediction
+            # apply update rule for glm.
+            self.theta += self.step_size * sum((y[i] - pred[i]) * x[i, :] for i in range(n))
             delta = np.linalg.norm(self.theta - old_theta)
             if self.verbose:
-                print(f"SGAscent epoch {step}: parameter change: {delta}. ")
+                print(f"Gradient ascent epoch {step}: parameter change: {delta}. ")
             step += 1
-        print(f"SGAscent converges after {step} epochs.")
+        print(f"Gradient ascent converges after {step} epochs.")
         # *** END CODE HERE ***
 
     def predict(self, x):
@@ -113,7 +109,7 @@ class PoissonRegression:
         # *** END CODE HERE ***
 
 if __name__ == '__main__':
-    main(lr=1e-6*3,
+    main(lr=1e-5,
         train_path='train.csv',
         eval_path='valid.csv',
         save_path='poisson_pred.txt')

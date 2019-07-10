@@ -25,13 +25,13 @@ def main(lr, train_path, eval_path, save_path):
     np.savetxt(save_path, pred_val)
 
     # Plot the result
-    plt.scatter(x=y_val, y=pred_val)
+    plt.scatter(x=y_val, y=pred_val, label="Predictions")
     plt.xlabel("True Count")
     plt.ylabel("Predicted Expected Count")
 
     l = np.array([min(y_val), max(y_val)])
-    plt.plot(l, l, alpha=0.6, color="red")
-    plt.legend(["Prediction", "45-degree Line"])
+    plt.plot(l, l, alpha=0.6, color="red", label="45-degree Line")
+    plt.legend()
 
     image_path = save_path[:-3] + "png"
     plt.savefig(image_path)

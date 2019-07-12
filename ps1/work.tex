@@ -66,7 +66,7 @@
 		g(\theta^T x\upi) (1-g(\theta^T x\upi)) x\upi_j x\upi_k
 		\right)
 	\end{equation}
-	Notice that since $g(\theta^T x\upi) \in (0, 1)$, therefore $g(\theta^T x\upi) (1-g(\theta^T x\upi)) > 0$ for every $\theta$ and $x\upi$.3
+	Notice that since $g(\theta^T x\upi) \in (0, 1)$, therefore $g(\theta^T x\upi) (1-g(\theta^T x\upi)) > 0$ for every $\theta$ and $x\upi$.
 	\begin{proof} Show that $H_J (\theta) \succeq 0$: let $z = (z_1,\dots,z_d) \in \R^d$, then
 		\begin{align}
 			z^T H_J (\theta) \in \R^{1 \times d}
@@ -83,6 +83,21 @@
 		\end{align}
 		Hence, $H_J(\theta) \succeq 0$ is shown by showing $z^T H_J(\theta) z$ for every $z \in \R^d$.
 	\end{proof}
+	
+	\newpage
+	\subsection{Question 1(b) Coding}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.6\linewidth]{src/linearclass/logreg_pred_1.png}
+		\caption{Logistic Regression Decision Boundary on Dataset 1}
+	\end{figure}
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.6\linewidth]{src/linearclass/logreg_pred_2.png}
+		\caption{Logistic Regression Decision Boundary on Dataset 2}
+	\end{figure}
+	
 	
 	\newpage
 	\subsection{Question 1(c)}
@@ -196,12 +211,147 @@
 	\end{proof}
 	
 	\subsubsection{$\Sigma^{-1}$}
+	\begin{lemma}
+		Given matrices $A, B$ such that $AB$ and $BA$ are squared, then
+		\begin{equation}
+			\tx{tr}(AB) = \tx{tr}(BA)
+		\end{equation}
+		\begin{proof}
+			In lecture notes.
+		\end{proof}
+	\end{lemma}
+	
+	\begin{lemma}
+		\begin{align}
+			\pd{}{A} \tx{tr}(AB) = \pd{}{A} \tx{tr}(BA) = B^T
+		\end{align}
+		\begin{proof}
+			Let $A \in \R^{n \times m}$ and $B \in \R^{m \times n}$. Let $a_i \in \R^m$ denote the $i^{th}$ \ul{row} of matrix $A$, let $b_j \in \R^m$ denote the $j^{th}$ \ul{column} of matrix $B$,
+			\begin{align}
+				\tx{tr}(AB) &= \tx{tr}
+				\begin{pmatrix}
+					a_1 \cdot b_1 & a_1 \cdot b_2 & \cdots & a_1 \cdot b_n \\
+					a_2 \cdot b_1 & a_2 \cdot b_2 & \cdots & a_2 \cdot b_n \\
+					\vdots & & \ddots & \vdots \\
+					a_n \cdot b_1 & a_n \cdot b_2 & \cdots & a_n \cdot b_n 
+				\end{pmatrix} \\
+				&= \sum_{i=1}^n a_i \cdot b_i \\
+				&= \sum_{i=1}^n A_{i, j} B_{j, i} \\
+				&\implies \pd{\tx{tr}(AB)}{A_{i,j}} = B_{j,i} \\
+				&\implies \nabla_A \tx{tr}(AB) = B^T
+			\end{align}
+			Since $\tx{tr}(AB) = \tx{tr}(BA)$, $\nabla_A \tx{tr}(BA) = B^T$ as well.
+		\end{proof}
+	\end{lemma}
+	
 	\begin{proof}
-		\hl{TODO}
+		\begin{align}
+			&\pd{}{\Sigma} \ell(\Sigma, \cdot) = 0 \\
+			&\implies \pd{}{\Sigma} \sum_{i=1}^n \log(p(x\upi|y\upi;\mu_0, \mu_1, \Sigma)) 
+			+ \underbrace{\log(p(y\upi;\phi))}_{\perp \Sigma} = 0 \\
+			&\iff \pd{}{\Sigma} \sum_{i=1}^n \log(p(x\upi|y\upi;\mu_0, \mu_1, \Sigma)) = 0 \\
+			&\implies 
+			\pd{}{\Sigma} \sum_{i=1}^n y\upi \left [
+				-\frac{d}{2} \log(2\pi) - \frac{1}{2} \log(|\Sigma|) - \frac{1}{2} (x\upi - \mu_1)^T \Sigma^{-1} (x\upi - \mu_1)
+			\right ] \\
+			&+ (1 - y\upi) \left [
+				-\frac{d}{2} \log(2\pi) - \frac{1}{2} \log(|\Sigma|) - \frac{1}{2} (x\upi - \mu_0)^T \Sigma^{-1} (x\upi - \mu_0)
+			\right ] = 0
+		\end{align}
+		where $-\frac{d}{2} \log(2\pi)$ is constant and independent from $\Sigma$, therefore it can be dropped in the first order condition.
+		\begin{align}
+			&\implies \pd{}{\Sigma} \sum_{i=1}^n y\upi \left [- \frac{1}{2} \log(|\Sigma|) - \frac{1}{2} (x\upi - \mu_1)^T \Sigma^{-1} (x\upi - \mu_1)
+			\right ] \\
+			&+ (1 - y\upi) \left [- \frac{1}{2} \log(|\Sigma|) - \frac{1}{2} (x\upi - \mu_0)^T \Sigma^{-1} (x\upi - \mu_0)
+			\right ] = 0 \\
+			&\implies \pd{}{\Sigma} \sum_{i=1}^n - \frac{1}{2} \log(|\Sigma|) - \frac{y\upi}{2} (x\upi - \mu_1)^T \Sigma^{-1} (x\upi - \mu_1) - \frac{1-y\upi}{2} (x\upi - \mu_0)^T \Sigma^{-1} (x\upi - \mu_0) = 0 \\
+			&\implies \pd{}{\Sigma} \sum_{i=1}^n \log(|\Sigma|) 
+			+ y\upi (x\upi - \mu_1)^T \Sigma^{-1} (x\upi - \mu_1) 
+			+ (1-y\upi) (x\upi - \mu_0)^T \Sigma^{-1} (x\upi - \mu_0) = 0 \\
+			&\implies n \Sigma^{-1} + \pd{}{\Sigma} \sum_{i=1}^n y\upi \tx{tr}((x\upi - \mu_1)^T \Sigma^{-1} (x\upi - \mu_1))
+			+ (1-y\upi) \tx{tr}((x\upi - \mu_0)^T \Sigma^{-1} (x\upi - \mu_0)) = 0 \\
+			&\implies n \Sigma^{-1} + \pd{}{\Sigma} \sum_{i=1}^n y\upi 
+			\tx{tr}(
+				\Sigma^{-1} (x\upi - \mu_1) (x\upi - \mu_1)^T
+			)
+			+ (1 - y\upi) 
+			\tx{tr}(
+				\Sigma^{-1} (x\upi - \mu_0) (x\upi - \mu_0)^T
+			) = 0 \\
+			&\implies n \Sigma^{-1} + \sum_{i=1}^n y\upi (x\upi - \mu_1) (x\upi - \mu_1)^T + (1 - y\upi) (x\upi - \mu_0) (x\upi - \mu_0)^T = 0 \\
+			&\implies n \Sigma^{-1} + \sum_{i=1}^n (x\upi - \mu_{y\upi}) (x\upi - \mu_{y\upi})^T = 0 \\
+			&\implies \Sigma = \frac{1}{n} \sum_{i=1}^n (x\upi - \mu_{y\upi}) (x\upi - \mu_{y\upi})^T \in \R^{d \times d}
+		\end{align}
 	\end{proof}
 	
 	\newpage
+	\subsection{Question 1(e) Coding}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.6\linewidth]{src/linearclass/gda_pred_1.png}
+		\caption{GDA Decision Boundary on Dataset 1}
+	\end{figure}
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.6\linewidth]{src/linearclass/gda_pred_2.png}
+		\caption{GDA Decision Boundary on Dataset 2}
+	\end{figure}
+	
+	\newpage
+	\subsection{Question 1 (f)}
+%	\begin{figure}[h]
+%		\centering
+%		\includegraphics[width=0.45\linewidth]{src/linearclass/logreg_pred_1.png}
+%		\caption{Logistic Regression Decision Boundary on Dataset 1}
+%	\end{figure}
+%
+%	\begin{figure}[h]
+%		\centering
+%		\includegraphics[width=0.45\linewidth]{src/linearclass/gda_pred_1.png}
+%		\caption{GDA Decision Boundary on Dataset 1}
+%	\end{figure}
+%	
+	\paragraph{Comment} The decision boundary from logistic regression seems more reasonable. The logistic decision boundary puts weight on both $x_1$ and $x_2$. However, the GDA decision boundary is almost vertical and does not put much weight on $x_2$, the decision is made heavily relied on the $x_1\upi$ for each sample.
+	
+	\subsection{Question 1(g)}
+%	\begin{figure}[h]
+%		\centering
+%		\includegraphics[width=0.45\linewidth]{src/linearclass/logreg_pred_2.png}
+%		\caption{Logistic Regression Decision Boundary on Dataset 2}
+%	\end{figure}
+%
+%	\begin{figure}[h]
+%		\centering
+%		\includegraphics[width=0.45\linewidth]{src/linearclass/gda_pred_2.png}
+%		\caption{GDA Decision Boundary on Dataset 2}
+%	\end{figure}
+
+	\paragraph{Comment} Decision boundaries from logistic regression and GDA are nearly identical. In the first dataset GDA seem to perform worse than logistic regression. GDA assumed common variance across groups, however, from the scatter plot, the variance of $x_2$ within green dot group is much less the variance of $x_2$ within blue cross group. So the GDA assumption is critically compromised in the first dataset. In contrast, for the second dataset, variance of both $x_1$ and $x_2$ are similar in both groups, the common-covariance assumption of GDA model is more realistic, thus GDA and logistic regression generated similar results on the second dataset.
+	
+	\subsection{Question 1(h)}
+	\paragraph{Comment} we can normalize/standardize $x_1$ and $x_2$ within two groups using 
+	\begin{align}
+		x\upi_j \leftarrow \frac{x\upi_j - \mu_{x_j}}{\sigma_j}
+	\end{align}
+	so that both $x_1$ and $x_2$ have variance of (approximately) 1 in both groups, so that the common-covariance assumption of GDA becomes more realistic.
+	
+	\newpage
 	\section{Question 2: Incomplete, Positive-Only Labels}
+	\subsection{Question 2(a) Coding}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.6\linewidth]{src/posonly/posonly_true_pred.png}
+		\caption{Test Set Prediction of Models Trained on True Label}
+	\end{figure}
+	
+	\subsection{Question 2(b) Coding}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.6\linewidth]{src/posonly/posonly_naive_pred.png}
+		\caption{Test Set Prediction of Naive Model}
+	\end{figure}
+	
 	\subsection{Question 2(c)}
 	\begin{proof}
 		\begin{align}
@@ -260,6 +410,13 @@
 		\end{align}
 	\end{proof}
 	
+	\subsection{Question 2(f) Coding}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.6\linewidth]{src/posonly/posonly_adjusted_pred.png}
+		\caption{Adjusted Prediction on Test Set}
+	\end{figure}
+	
 	\newpage
 	
 	\section{Question 3: Poisson Regression}
@@ -286,9 +443,6 @@
 	\subsection{Question 3(b)}
 	\begin{proof}[Answer.]
 	\par By definition, the canonical response function maps $\eta$ to the expectation $\expect{T(y); \eta}$, which equals $\expect{y; \eta} = \lambda$ here. Based on the fact that $\eta(\lambda) = \log(\lambda)$, the \ul{exponential} function maps $\eta(\lambda)$ to $\expect{y; \eta}$. Hence, the canonical response function here is the exponential function.
-	\begin{equation}
-		\expect{y; \eta \equiv \theta^T x} = \exp(\eta) = \exp(\theta^T x)
-	\end{equation}
 	\end{proof}
 	
 	\subsection{Question 3(c)}
@@ -308,6 +462,13 @@
 	\end{align}
 	where $(x\upi, y\upi)$ is the randomly selected sample, and $\alpha > 0$ denotes the learning rate.
 	\end{proof}
+	
+	\subsection{Question 3(d) Coding}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.6\linewidth]{src/poisson/poisson_pred.png}
+		\caption{True Count and Predicted Counts on the Validation Set}
+	\end{figure}
 	
 	\newpage
 	\section{Question 4: Convexity of Generalized Linear Models}
@@ -366,6 +527,39 @@
 		\theta &\leftarrow \theta + \alpha \sum_{i=1}^n \left(y\upi - \theta^T \hat{x}\upi \right) \hat{x}\upi
 	\end{align}
 	where $\alpha$ denotes the learning rate.
+	\subsection{Question 5(b) Coding}
+	\paragraph{Comment} It is theoretically possible to fit a sine function using polynomials by Taylor's expansion. However, when $k=3$, the polynomial model is not expressive enough to capture all curvatures in the training set.
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.6\linewidth]{src/featuremaps/5b.png}
+		\caption{Polynomial Features up to Degree 3}
+	\end{figure}
+	
+	\newpage
+	\subsection{Question 5(c) Coding}
+	\paragraph{Comment} For models with $k=5$ or $k=10$, the model captures the curvature of training samples much better than $k=3$ model does. However, for $k=20$, the model starts to over fit the noise in the training set, and the expected value demonstrates abnormal curvature near $x=-3$, $x=4.5$, and $x=6$.
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.6\linewidth]{src/featuremaps/5c.png}
+		\caption{Polynomial Features}
+	\end{figure}
+	
+	\subsection{Question 5(d) Coding}
+	\paragraph{Comment} By observing the training set, it can be postulated that the true data generating process actually involves a sin function. Adding the $\sin(x)$ feature allows the model to fully capture the underlying pattern, even with low degree of polynomial terms. Also, when $k$ is large, the model starts to over fit training samples by capturing the noise.
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.6\linewidth]{src/featuremaps/5d.png}
+		\caption{Polynomial and Sin Features}
+	\end{figure}
+	
+	\newpage
+	\subsection{Question 5(e) Coding}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.6\linewidth]{src/featuremaps/5e.png}
+		\caption{Overfitting on Small Dataset}
+	\end{figure}
+	\paragraph{Comment} When the number of features is smaller than number of training samples, the model is experiencing under fitting problem. However, when the number of parameters in the model is more than the number of training, the model can fit all training samples exactly (when $k \geq 5$, the fitting line passes through all training samples precisely), and the model suffers from over fitting problem.
 \end{document}
 
 

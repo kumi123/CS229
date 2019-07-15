@@ -516,38 +516,7 @@
 	\newpage
 	\subsection{Question 4(c)}
 	\begin{proof}
-		The negative log-likelihood (NLL) loss function looks like
-		\begin{align}
-			\ell(\theta) &= - \log \left(
-				\prod_{i=1}^n p(y\upi; \eta\upi)
-			\right) \\
-			&= - \log \left(
-				\prod_{i=1}^n p(y\upi; \theta^T x\upi)
-			\right) \\
-			&= - \sum_{i=1}^n \log(p(y\upi; \theta^T x\upi)) \\
-			&= - \sum_{i=1}^n \log (b(y\upi)) + [\theta^T x\upi - a(\theta^T x\upi)]
-		\end{align}
-		Then for each $j \in \{1, \dots, d\}$, the first order derivative of $\ell(\theta)$ becomes
-		\begin{align}
-			\pd{\ell(\theta)}{\theta_j} &= - \sum_{i=1}^n x\upi_j - \pd{a(\theta^T x\upi)}{\eta} \pd{\eta}{\theta_j} \\
-			&= - \sum_{i=1}^n x\upi_j - \expect{Y; \eta} x\upi_j
-		\end{align}
-		then for each $k \in \{1, \dots, d\}$, the second order derivative is 
-		\begin{align}
-			\frac{\partial^2 \ell(\theta)}{\partial \theta_j \theta_k} &= - \sum_{i=1}^n - x_j\upi \pd{\expect{Y; \eta}}{\eta} \pd{\eta}{\theta_k} \\
-			&= \sum_{i=1}^n x_j\upi x_k\upi \var{Y; \eta}
-		\end{align}
-		Let $z = (z_1, \dots, z_d) \in \R^d$ be an arbitrary vector in $\R^d$, 
-		\begin{align}
-			z^T H_\ell (\theta) z &= \sum_{k=1}^d \sum_{j=1}^d \sum_{i=1}^n z_k x\upi_k x\upi_j z_j \var{Y; \eta} \\
-			&= \var{Y; \eta} \sum_{i=1}^n \sum_{k=1}^d \sum_{j=1}^d z_k x\upi_k x\upi_j z_j \\
-			&= \var{Y; \eta} \sum_{i=1}^n (x\upi z)^2 \tx{ (by hint in Q1.a)}
-		\end{align}
-		Further, the variance of random variable is always nonnegative, and $(x\upi z)^2 \geq 0$. Therefore, for every $z \in \R^d$, 
-		\begin{align}
-			z^T H_\ell (\theta) z \geq 0
-		\end{align}
-		$H_\ell (\theta)$ is positive semidefinite.
+		
 	\end{proof}
 	
 	\newpage

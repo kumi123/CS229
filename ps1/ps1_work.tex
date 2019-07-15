@@ -11,6 +11,7 @@
 \usepackage{centernot}
 \usepackage{datetime}
 \usepackage[shortlabels]{enumitem}
+\usepackage{datetime}
 
 \usepackage[margin=1truein]{geometry}
 \usepackage{setspace}
@@ -27,6 +28,11 @@
 	\newpage
 	\section{Question 1: Linear Classifiers}
 	\subsection{Question 1(a)}
+	
+	\begin{remark}
+		Let $d \in \N$, then $[d]$ denotes the set $\{1,\dots, d\}$.
+	\end{remark}
+	
 	\begin{lemma}
 		\begin{equation}
 			g'(z) = g(z) \left(1-g(z)\right)
@@ -38,7 +44,6 @@
 			\sum_i \sum_j z_i x_i z_j x_j = (x^T z)^2 \geq 0
 		\end{equation}
 	\end{lemma}
-	
 	\begin{align}
 		\nabla_\theta J(\theta) &= - \frac{1}{n} \sum_{i=1}^n \left(
 		y\upi \frac{g'(\theta^T x\upi)}{g(\theta^T x\upi)}
@@ -143,6 +148,7 @@
 			\theta_0 &= \log \frac{\phi}{1-\phi} + \frac{1}{2} \mu_0^T \Sigma^{-1} \mu_0 - \frac{1}{2} \mu_1^T \Sigma^{-1} \mu_1
 		\end{align}
 	\end{proof}
+	
 	\newpage
 	\subsection{Question 1(d)}
 	\subsubsection{$\phi$}
@@ -314,6 +320,7 @@
 %	
 	\paragraph{Comment} The decision boundary from logistic regression seems more reasonable. The logistic decision boundary puts weight on both $x_1$ and $x_2$. However, the GDA decision boundary is almost vertical and does not put much weight on $x_2$, the decision is made heavily relied on the $x_1\upi$ for each sample.
 	
+	\newpage
 	\subsection{Question 1(g)}
 %	\begin{figure}[h]
 %		\centering
@@ -329,6 +336,7 @@
 
 	\paragraph{Comment} Decision boundaries from logistic regression and GDA are nearly identical. In the first dataset GDA seem to perform worse than logistic regression. GDA assumed common variance across groups, however, from the scatter plot, the variance of $x_2$ within green dot group is much less the variance of $x_2$ within blue cross group. So the GDA assumption is critically compromised in the first dataset. In contrast, for the second dataset, variance of both $x_1$ and $x_2$ are similar in both groups, the common-covariance assumption of GDA model is more realistic, thus GDA and logistic regression generated similar results on the second dataset.
 	
+	\newpage
 	\subsection{Question 1(h)}
 	\paragraph{Comment} we can normalize/standardize $x_1$ and $x_2$ within two groups using 
 	\begin{align}
@@ -345,6 +353,7 @@
 		\caption{Test Set Prediction of Models Trained on True Label}
 	\end{figure}
 	
+	\newpage
 	\subsection{Question 2(b) Coding}
 	\begin{figure}[h]
 		\centering
@@ -352,6 +361,7 @@
 		\caption{Test Set Prediction of Naive Model}
 	\end{figure}
 	
+	\newpage
 	\subsection{Question 2(c)}
 	\begin{proof}
 		\begin{align}
@@ -376,7 +386,6 @@
 	\end{proof}
 	
 	\newpage
-	
 	\subsection{Question 2(d)}
 	\begin{proof}
 		\begin{align}
@@ -389,7 +398,6 @@
 	\end{proof}
 	
 	\newpage
-	
 	\subsection{Question 2(e)}
 	\begin{proof}
 		\begin{align}
@@ -410,6 +418,7 @@
 		\end{align}
 	\end{proof}
 	
+	\newpage
 	\subsection{Question 2(f) Coding}
 	\begin{figure}[h]
 		\centering
@@ -445,6 +454,7 @@
 	\par By definition, the canonical response function maps $\eta$ to the expectation $\expect{T(y); \eta}$, which equals $\expect{y; \eta} = \lambda$ here. Based on the fact that $\eta(\lambda) = \log(\lambda)$, the \ul{exponential} function maps $\eta(\lambda)$ to $\expect{y; \eta}$. Hence, the canonical response function here is the exponential function.
 	\end{proof}
 	
+	\newpage
 	\subsection{Question 3(c)}
 	\begin{proof}[Derive.]
 	\begin{align}
@@ -463,6 +473,7 @@
 	where $(x\upi, y\upi)$ is the randomly selected sample, and $\alpha > 0$ denotes the learning rate.
 	\end{proof}
 	
+	\newpage
 	\subsection{Question 3(d) Coding}
 	\begin{figure}[h]
 		\centering
@@ -558,6 +569,8 @@
 		\theta &\leftarrow \theta + \alpha \sum_{i=1}^n \left(y\upi - \theta^T \hat{x}\upi \right) \hat{x}\upi
 	\end{align}
 	where $\alpha$ denotes the learning rate.
+	
+	\newpage
 	\subsection{Question 5(b) Coding}
 	\paragraph{Comment} It is theoretically possible to fit a sine function using polynomials by Taylor's expansion. However, when $k=3$, the polynomial model is not expressive enough to capture all curvatures in the training set.
 	\begin{figure}[h]
@@ -575,6 +588,7 @@
 		\caption{Polynomial Features}
 	\end{figure}
 	
+	\newpage
 	\subsection{Question 5(d) Coding}
 	\paragraph{Comment} By observing the training set, it can be postulated that the true data generating process actually involves a sin function. Adding the $\sin(x)$ feature allows the model to fully capture the underlying pattern, even with low degree of polynomial terms. Also, when $k$ is large, the model starts to over fit training samples by capturing the noise.
 	\begin{figure}[h]

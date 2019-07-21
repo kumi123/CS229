@@ -15,8 +15,21 @@ def main(train_path, valid_path, save_path):
 
     # *** START CODE HERE ***
     # Train a GDA classifier
+    model = GDA()
+    model.fit(x_train, y_train)
     # Plot decision boundary on validation set
+    x_val, y_val = util.load_dataset(valid_path, add_intercept=False)
+    image_path = save_path[:-3] + "png"
+    theta = np.concatenate(model.theta)
+    assert theta.shape == (x_val.shape[1]+1, 1)
+    util.plot(
+        x=x_val, y=y_val,
+        theta=theta,
+        save_path=image_path
+    )
     # Use np.savetxt to save outputs from validation set to save_path
+    prob_val = model.predict(x_val)
+    np.savetxt(save_path, prob_val)
     # *** END CODE HERE ***
 
 
@@ -53,8 +66,31 @@ class GDA:
             y: Training example labels. Shape (n_examples,).
         """
         # *** START CODE HERE ***
+        n, d = x.shape  # Get the shape
+        if self.theta is None:
+            self.theta = [np.zeros(1), np.zeros([d, 1])]
         # Find phi, mu_0, mu_1, and sigma
+        self.phi = np.mean(y)
+        self.mu_0 = np.mean(x[y == 0], axis=0).reshape(d, 1)
+        self.mu_1 = np.mean(x[y == 1], axis=0).reshape(d, 1)
+        self.mu = [self.mu_0, self.mu_1]
+        total = np.zeros([d, d])
+        for i in range(n):
+            c = x[i, :].reshape(d, 1) - self.mu[int(y[i])]
+            total += np.matmul(c, c.T)
+        self.sigma = total / n
         # Write theta in terms of the parameters
+        # theta_0
+        self.theta[0] = np.log(self.phi / (1 - self.phi)) + 0.5 * np.matmul(
+            np.matmul(self.mu_0.T, np.linalg.inv(self.sigma)),
+            self.mu_0
+        ) - 0.5 * np.matmul(
+            np.matmul(self.mu_1.T, np.linalg.inv(self.sigma)),
+            self.mu_1
+        )
+        print("Theta 0 shape: ", self.theta[0].shape)
+        self.theta[1] = np.matmul(np.linalg.inv(self.sigma).T, (self.mu_1 - self.mu_0))
+        print("Theta 1 shape: ", self.theta[1].shape)
         # *** END CODE HERE ***
 
     def predict(self, x):
@@ -67,6 +103,12 @@ class GDA:
             Outputs of shape (n_examples,).
         """
         # *** START CODE HERE ***
+        n, d = x.shape
+
+        def g(z): return 1 / (1 + np.exp(-z))
+        z = np.matmul(x, self.theta[1]) + (np.ones([n, 1]) * self.theta[0])
+        prob = g(z).reshape(n,)
+        return prob
         # *** END CODE HERE
 
 if __name__ == '__main__':

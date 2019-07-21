@@ -2,6 +2,7 @@ import numpy as np
 import util
 import matplotlib.pyplot as plt
 
+
 def main(lr, train_path, eval_path, save_path):
     """Problem: Poisson regression with gradient ascent.
 
@@ -16,7 +17,24 @@ def main(lr, train_path, eval_path, save_path):
 
     # *** START CODE HERE ***
     # Fit a Poisson Regression model
+    model = PoissonRegression(step_size=lr)
+    model.fit(x_train, y_train)
     # Run on the validation set, and use np.savetxt to save outputs to save_path
+    x_val, y_val = util.load_dataset(eval_path, add_intercept=True)
+    pred_val = model.predict(x_val)
+    np.savetxt(save_path, pred_val)
+
+    # Plot the result
+    plt.scatter(x=y_val, y=pred_val, label="Predictions")
+    plt.xlabel("True Count")
+    plt.ylabel("Predicted Expected Count")
+
+    l = np.array([min(y_val), max(y_val)])
+    plt.plot(l, l, alpha=0.6, color="red", label="45-degree Line")
+    plt.legend()
+
+    image_path = save_path[:-3] + "png"
+    plt.savefig(image_path)
     # *** END CODE HERE ***
 
 
@@ -53,6 +71,23 @@ class PoissonRegression:
             y: Training example labels. Shape (n_examples,).
         """
         # *** START CODE HERE ***
+        n, d = x.shape
+        if self.theta is None:
+            self.theta = np.zeros(d)
+
+        delta = np.inf  # change in param to determine convergence.
+        step = 0
+        # Gradient ascent:
+        while delta >= self.eps and step < self.max_iter:
+            old_theta = self.theta.copy()
+            pred = np.exp(np.matmul(x, self.theta))  # prediction
+            # apply update rule for glm.
+            self.theta += self.step_size * sum((y[i] - pred[i]) * x[i, :] for i in range(n))
+            delta = np.linalg.norm(self.theta - old_theta)
+            if self.verbose:
+                print(f"Gradient ascent epoch {step}: parameter change: {delta}. ")
+            step += 1
+        print(f"Gradient ascent converges after {step} epochs.")
         # *** END CODE HERE ***
 
     def predict(self, x):
@@ -65,6 +100,12 @@ class PoissonRegression:
             Floating-point prediction for each input, shape (n_examples,).
         """
         # *** START CODE HERE ***
+        n, d = x.shape
+        eta = np.matmul(x, self.theta)
+        # The canonical response function is exp.
+        pred = np.exp(eta)
+        assert pred.shape == (n,)
+        return pred
         # *** END CODE HERE ***
 
 if __name__ == '__main__':

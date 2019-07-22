@@ -27,7 +27,8 @@ def logistic_regression(X, Y):
         theta = theta + learning_rate * grad
         if i % 10000 == 0:
             print('Finished %d iterations' % i)
-        if np.linalg.norm(prev_theta - theta) < 1e-15:
+        EPSILON = 1e-15
+        if np.linalg.norm(prev_theta - theta) < EPSILON:
             print('Converged in %d iterations' % i)
             break
     return

@@ -120,7 +120,6 @@ def fit_naive_bayes_model(matrix, labels):
     vocab[i, k] gives P(x[j]=k | y=i), i in {0, 1}
     class[i] gives P(y=i), i in {0, 1}
     """
-
     # *** START CODE HERE ***
     N, V = matrix.shape
     assert N == len(labels)
@@ -163,6 +162,19 @@ def predict_from_naive_bayes_model(model, matrix):
     Returns: A numpy array containg the predictions from the model
     """
     # *** START CODE HERE ***
+    N, V = matrix.shape
+    phi_vocab, phi_class = model["vocab"], model["class"]
+    assert phi_vocab.shape[1] == V
+    probs = np.zeros([N, 2])
+    for i in range(N):
+        word = matrix[i, :]  # The word representation.
+        for y in (0, 1):
+            probs[i, y] = np.log(phi_class[y]) + np.dot(
+                np.log(phi_vocab)[y, :],
+                matrix[i, :]
+            )
+    pred = (probs[:, 1] > probs[:, 0]).astype(int)
+    return pred
     # *** END CODE HERE ***
 
 

@@ -135,7 +135,7 @@ def fit_naive_bayes_model(matrix, labels):
         total += 1  # Laplace Smoothing
         assert np.sum(total) == denominator  # two methods should give the same denominator
         prob = total / denominator
-        assert np.sum(prob) == 1
+        assert np.abs(np.sum(prob) - 1.0) < 1e-10, f"received: {np.sum(prob)}"
         phi_vocab[y, :] = prob
     assert np.all(np.sum(phi_vocab, axis=1) == np.ones([2]))
     # phi(y)

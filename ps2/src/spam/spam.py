@@ -220,6 +220,16 @@ def compute_best_svm_radius(train_matrix, train_labels, val_matrix, val_labels, 
         The best radius which maximizes SVM accuracy.
     """
     # *** START CODE HERE ***
+    results = list()
+    for r in radius_to_consider:
+        model = svm.svm_train(train_matrix, train_labels, r)
+        pred = svm.svm_predict(model, val_matrix, r)
+        accuracy = np.mean(pred == val_labels)
+        print(f"Radius: {r}, Accuracy: {accuracy}")
+        record = {"r": r, "acc": accuracy}
+        results.append(record)
+    results.sort(key=lambda x: -x["acc"])
+    return results[0]["r"]
     # *** END CODE HERE ***
 
 

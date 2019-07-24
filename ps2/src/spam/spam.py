@@ -50,7 +50,7 @@ def create_dictionary(messages):
     for msg in messages:
         words = set(get_words(msg))  # As we are counting the number of messages
         # ... containing certain words, this prevents double counting.
-        for w, i in words:
+        for w in words:
             if w in count:
                 count[w] += 1
             else:

@@ -191,6 +191,15 @@ def get_top_five_naive_bayes_words(model, dictionary):
     Returns: A list of the top five most indicative words in sorted order with the most indicative first
     """
     # *** START CODE HERE ***
+    phi_vocab, phi_class = model["vocab"], model["class"]
+    influence = list()
+    for word, index in dictionary.items():
+        score = np.log(phi_vocab[1, index] / phi_vocab[0, index])
+        influence.append((word, score))
+    influence.sort(key=lambda x: -x[1])
+    top = [word for word, _ in influence[:5]]
+    assert len(top) == 5
+    return top
     # *** END CODE HERE ***
 
 

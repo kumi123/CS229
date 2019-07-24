@@ -45,6 +45,26 @@ def create_dictionary(messages):
     """
 
     # *** START CODE HERE ***
+    count = dict()
+    # Create a counts for messages, counting the number of occurences.
+    for msg in messages:
+        words = set(get_words(msg))  # As we are counting the number of messages
+        # ... containing certain words, this prevents double counting.
+        for w, i in words:
+            if w in count:
+                count[w] += 1
+            else:
+                count[w] = 1
+    # Filter infrequent words
+    freq = list()
+    for w, num_occur in count.items():
+        if num_occur >= 5:
+            freq.append(w)
+    # Construct dictionary
+    dictionary = dict()
+    for i, w in enumerate(freq):
+        dictionary[w] = i
+    return dictionary
     # *** END CODE HERE ***
 
 

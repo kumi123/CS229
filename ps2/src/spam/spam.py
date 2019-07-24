@@ -116,9 +116,37 @@ def fit_naive_bayes_model(matrix, labels):
         labels: The binary (0 or 1) labels for that training data
 
     Returns: The trained model
+    NOTE: the trained model is a dictionary with fields vocab @ (2, V), class @ (2,)
+    vocab[i, k] gives P(x[j]=k | y=i), i in {0, 1}
+    class[i] gives P(y=i), i in {0, 1}
     """
 
     # *** START CODE HERE ***
+    N, V = matrix.shape
+    assert N == len(labels)
+    model = dict()
+    phi_vocab = np.zeros([2, V])
+    phi_class = np.zeros([2])
+    # phi(k|y)
+    for y in (0, 1):
+        X = matrix[labels == y]
+        total = np.sum(X, axis=0)
+        denominator = np.sum(total) + V
+        assert len(total) == V
+        total += 1  # Laplace Smoothing
+        assert np.sum(total) == denominator  # two methods should give the same denominator
+        prob = total / denominator
+        assert np.sum(prob) == 1
+        phi_vocab[y, :] = prob
+    assert np.all(np.sum(phi_vocab, axis=1) == np.ones([2]))
+    # phi(y)
+    phi_class[0] = np.mean(labels == 0)
+    phi_class[1] = np.mean(labels == 1)
+    assert np.sum(phi_class) == 1
+    # Construct model
+    model["vocab"] = phi_vocab
+    model["class"] = phi_class
+    return model
     # *** END CODE HERE ***
 
 

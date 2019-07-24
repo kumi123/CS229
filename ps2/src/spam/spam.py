@@ -21,6 +21,10 @@ def get_words(message):
     """
 
     # *** START CODE HERE ***
+    # Split the message on spaces
+    sp = message.split(" ")
+    # Convert everything to lower cases
+    return [x.lower() for x in sp]
     # *** END CODE HERE ***
 
 

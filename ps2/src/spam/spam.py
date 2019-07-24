@@ -89,6 +89,16 @@ def transform_text(messages, word_dictionary):
         j-th vocabulary word in the i-th message.
     """
     # *** START CODE HERE ***
+    num_msg = len(messages)
+    vocab_size = len(word_dictionary)
+    freq_array = np.zeros([num_msg, vocab_size]).astype(int)
+    for i, msg in enumerate(messages):
+        sp = get_words(msg)
+        for word in sp:
+            if word in word_dictionary:
+                j = word_dictionary[word]
+                freq_array[i, j] += 1
+    return freq_array
     # *** END CODE HERE ***
 
 

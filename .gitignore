@@ -1,2 +1,6 @@
 .vscode/settings.json
 **.pyc
+ps2/src/mnist/labels_test.csv
+ps2/src/mnist/images_test.csv
+ps2/src/mnist/images_train.csv
+ps2/src/mnist/labels_train.csv

@@ -16,6 +16,8 @@ def initial_state():
     """
 
     # *** START CODE HERE ***
+    beta = list()
+    return beta
     # *** END CODE HERE ***
 
 

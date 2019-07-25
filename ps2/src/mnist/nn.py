@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import argparse
 
+
 def softmax(x):
     """
     Compute softmax function for a batch of input values. 
@@ -21,6 +22,14 @@ def softmax(x):
         A 2d numpy float array containing the softmax results of shape batch_size x number_of_classes
     """
     # *** START CODE HERE ***
+    B, K = x.shape
+    # The softmax is invariant for constant c: exp(z) / sum[exp(z)] = exp(z-c) / sum[exp(z-c)]
+    max_array = np.max(x, axis=1, keepdims=True)  # Keep dimensions for boardcasting.
+    assert max_array.shape == (B, 1)
+    x_normalized = x - max_array
+    result = np.exp(x_normalized) / np.sum(np.exp(x_normalized), axis=1, keepdims=True)
+    assert result.shape == (B, K)
+    return result
     # *** END CODE HERE ***
 
 def sigmoid(x):

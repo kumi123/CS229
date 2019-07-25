@@ -60,7 +60,7 @@ def update_state(state, kernel, learning_rate, x_i, y_i) -> None:
     # The prediction of x_i based on current information (0 ~ i-1)
     yhat = predict(state, kernel, x_i)
     new_beta = learning_rate * (y_i - yhat)
-    state.append(new_beta)
+    state.append((new_beta, x_i))
     # *** END CODE HERE ***
 
 

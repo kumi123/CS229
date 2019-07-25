@@ -91,7 +91,7 @@
 	\subsection{4(a)}
 	\paragraph{Answer} The kernel trick firstly represents each $\theta\upi$ as a linear combination of features of observations:
 	\begin{align}
-		\theta\upi = \sum_{\ell=1}^n \beta_\ell\upi \phi(x^{(\ell)})
+		\theta\upi &= \sum_{\ell=1}^n \beta_\ell\upi \phi(x^{(\ell)})
 	\end{align}
 	$\theta^{(0)}$ can be represented simply by setting $\beta_\ell^{(0)} = 0$ for every $\ell$. To make prediction, $\theta\upi \cdot \phi(x^{(i+1)})$ is firstly computed as 
 	\begin{align}
@@ -124,6 +124,19 @@
 	Given that $\beta^{(0)}_\ell$s are initialized to zero. And $\beta_{\ell}$ is updated at and only at step $\ell$. Therefore, $\beta_{i+1}\upi = \beta_{i+1}^{(0)} = 0$. The update rule can also be written as
 	\begin{align}
 		\beta_{i+1}^{(i+1)} &:= \alpha \left(y^{(i+1)} - g(\theta\upi \cdot \phi(x^{(i+1)}) )\right)
+	\end{align}
+	Moreover, because $\beta_\ell\upi = 0$ for every  $\ell > i$, the linear combination representation of $\theta\upi$ 
+	\begin{align}
+		\theta\upi &= \sum_{\ell=1}^n \beta_\ell\upi \phi(x^{(\ell)}) \\
+		&= \sum_{\ell=1}^i \beta_\ell\upi \phi(x^{(\ell)}) + \sum_{\ell=i+1}^n \beta_\ell\upi \phi(x^{(\ell)}) \\
+		&= \sum_{\ell=1}^i \beta_\ell\upi \phi(x^{(\ell)}) + 0 \\
+		&= \sum_{\ell=1}^i \beta_\ell\upi \phi(x^{(\ell)})
+	\end{align}
+	and the prediction can be reduced to
+	\begin{align}
+		\theta\upi \cdot \phi(x^{(i+1)}) &= \tx{sign}\left(
+		\sum_{\ell=1}^i \beta_\ell\upi K \left(\phi(x^{(\ell)}),\phi(x^{(i+1)}) \right)
+		\right)
 	\end{align}
 \end{document}
 

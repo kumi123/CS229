@@ -46,7 +46,7 @@ def predict(state, kernel, x_i):
     # *** END CODE HERE ***
 
 
-def update_state(state, kernel, learning_rate, x_i, y_i):
+def update_state(state, kernel, learning_rate, x_i, y_i) -> None:
     """Updates the state of the perceptron.
 
     Args:
@@ -57,6 +57,10 @@ def update_state(state, kernel, learning_rate, x_i, y_i):
         y_i: A 0 or 1 indicating the label for a single instance
     """
     # *** START CODE HERE ***
+    # The prediction of x_i based on current information (0 ~ i-1)
+    yhat = predict(state, kernel, x_i)
+    new_beta = learning_rate * (y_i - yhat)
+    state.append(new_beta)
     # *** END CODE HERE ***
 
 

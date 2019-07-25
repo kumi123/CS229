@@ -48,7 +48,7 @@ def sigmoid(x):
     # *** END CODE HERE ***
 
 
-def get_initial_params(input_size, num_hidden, num_output):
+def get_initial_params(input_size, num_hidden, num_output) -> dict:
     """
     Compute the initial parameters for the neural network.
 
@@ -61,7 +61,7 @@ def get_initial_params(input_size, num_hidden, num_output):
     W2 is the weight matrix for the output layers
     b2 is the bias vector for the output layer
 
-    As specified in the PDF, weight matricesshould be initialized with a random normal distribution.
+    As specified in the PDF, weight matrices should be initialized with a random normal distribution.
     Bias vectors should be initialized with zero.
     
     Args:
@@ -74,6 +74,12 @@ def get_initial_params(input_size, num_hidden, num_output):
     """
 
     # *** START CODE HERE ***
+    W1 = np.random.randn(input_size, num_hidden)
+    b1 = np.zeros(num_hidden)
+    W2 = np.random.randn(num_hidden, num_output)
+    b2 = np.zeros(num_output)
+    params = {"W1": W1, "b1": b1, "W2": W1, "b2": b2}
+    return params
     # *** END CODE HERE ***
 
 def forward_prop(data, labels, params):

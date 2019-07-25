@@ -16,8 +16,12 @@ def initial_state():
     """
 
     # *** START CODE HERE ***
-    beta = list()
-    return beta
+    # The state after updating i-th sample is a list of 2-tuples,
+    # where
+    # state[i][0] = beta_i
+    # state[i][1] = x_i
+    init_state = list()
+    return init_state
     # *** END CODE HERE ***
 
 

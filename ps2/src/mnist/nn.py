@@ -78,9 +78,10 @@ def get_initial_params(input_size, num_hidden, num_output) -> dict:
     b1 = np.zeros(num_hidden)
     W2 = np.random.randn(num_hidden, num_output)
     b2 = np.zeros(num_output)
-    params = {"W1": W1, "b1": b1, "W2": W1, "b2": b2}
+    params = {"W1": W1, "b1": b1, "W2": W2, "b2": b2}
     return params
     # *** END CODE HERE ***
+
 
 def forward_prop(data, labels, params):
     """
@@ -101,6 +102,19 @@ def forward_prop(data, labels, params):
             3. The average loss for these data elements
     """
     # *** START CODE HERE ***
+    N, P = data.shape  # P: num features
+    K = labels.shape[1]
+    a_hidden = sigmoid(np.matmul(data, params["W1"]) + params["b1"])
+    # print("Hidden shape:", a_hidden.shape)
+    out = softmax(np.matmul(a_hidden, params["W2"]) + params["b2"])
+    # print("Out shape:", out.shape)
+    loss = -1.0 * np.array([
+        np.dot(labels[i, :], out[i, :])
+        for i in range(N)
+        ])
+    # print("loss shape:", loss.shape)
+    avg_loss = np.mean(loss)
+    return a_hidden, out, avg_loss
     # *** END CODE HERE ***
 
 def backward_prop(data, labels, params, forward_prop_func):

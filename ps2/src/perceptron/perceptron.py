@@ -35,6 +35,14 @@ def predict(state, kernel, x_i):
         Returns the prediction (i.e 0 or 1)
     """
     # *** START CODE HERE ***
+    # The initial state.
+    if state == []:
+        return sign(0.0)
+    # Otherwise.
+    z = 0.0
+    for (beta, x) in state:
+        z += beta * kernel(x, x_i)
+    return sign(z)
     # *** END CODE HERE ***
 
 

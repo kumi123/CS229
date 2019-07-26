@@ -229,6 +229,17 @@ def gradient_descent_epoch(train_data, train_labels, learning_rate, batch_size, 
     """
 
     # *** START CODE HERE ***
+    # perform batch gradient descent
+    N, input_size = train_data.shape
+    split = np.linspace(N, batch_size).astype(int)[::-1]
+    for index in split:
+        # each mini batch
+        x = train_data[index-batch_size:index, :]
+        y = train_labels[index-batch_size:index, :]
+        grads = backward_prop(x, y, params, forward_prop_func)
+        # update gradient
+        for var in params.keys():
+            params[var] -= learning_rate * grads[var]
     # *** END CODE HERE ***
 
     # This function does not return anything

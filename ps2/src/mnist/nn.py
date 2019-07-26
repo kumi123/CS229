@@ -44,7 +44,12 @@ def sigmoid(x):
         A numpy float array containing the sigmoid results
     """
     # *** START CODE HERE ***
-    return 1 / (1 + np.exp(-x))
+    # return 1 / (1 + np.exp(-x))
+    # robust against overflow.
+    array = np.zeros_like(x)
+    array[x > 0] = 1 / (1 + np.exp(-x[x > 0]))
+    array[x <= 0] = np.exp(x[x <= 0]) / (np.exp(x[x <= 0]) + 1)
+    return array
     # *** END CODE HERE ***
 
 

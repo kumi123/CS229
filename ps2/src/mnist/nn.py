@@ -153,39 +153,27 @@ def backward_prop(data, labels, params, forward_prop_func):
     b1 = params["b1"]
     b2 = params["b2"]
     # Report
-    print(f"Input size: {input_size}, num labels: {K}, hidden size: {H}")
+    # print(f"Input size: {input_size}, num labels: {K}, hidden size: {H}")
     # Forward pass
     a1, a2, l = forward_prop_func(data, labels, params)
-    # Placeholders for derivates/gradients
-    dW1 = np.zeros_like(W1)
-    dW2 = np.zeros_like(W2)
-    db1 = np.zeros_like(b1)
-    db2 = np.zeros_like(b2)
-    # Backward: accumulate over training instances
-    for i in range(N):
-        # delta2 := D[J, z2]
-        delta2 = (a2[i, :] - labels[i, :])
-        assert delta2.shape == (1, K)
-        dW2 += np.matmul(a1[i, :].T, delta2)
-        db2 += delta2
-        # delta1 := D[J, z1]
-        dz2_da1 = W2.T  # (K, H)
-        assert dz2_da1.shape == (K, H)
-        da1_dz1 = np.diag([
-            a1[i, j] * (1 - a1[i, j])
-            for j in range(H)
-        ])  # (H, H) Derivative of sigmoid.
-        assert da1_dz1.shape == (H, H)
-        delta1 = np.matmul(delta2, dz2_da1)
-        delta1 = np.matmul(delta1, da1_dz1)
-        assert delta1.shape == (1, H)
-        dW1 += np.matmul(data[i, :].T, delta1)
-        db1 += delta1
+    # ==== Vectorized Version
+    delta2 = (a2 - labels).reshape(N, K)
+    delta1 = (delta2 @ W2.T) * a1 * (1 - a1)
+
+    dW2 = a1.T @ delta2
+    assert dW2.shape == W2.shape
+    dW1 = data.T @ delta1
+    assert dW1.shape == W1.shape
+
+    db2 = np.sum(delta2, axis=0)
+    assert db2.shape == b2
+    db1 = np.sum(delta1, axis=0)
+    assert db1.shape == b1
     return {
-        "W1": dW1,
-        "W2": dW2,
-        "b1": db1,
-        "b2": db2,
+        "W1": dW1 / N,
+        "W2": dW2 / N,
+        "b1": db1 / N,
+        "b2": db2 / N,
     }
     # *** END CODE HERE ***
 
@@ -225,9 +213,7 @@ def gradient_descent_epoch(train_data, train_labels, learning_rate, batch_size, 
         train_data: A numpy array containing the training data
         train_labels: A numpy array containing the training labels
         learning_rate: The learning rate
-        batch_size: The amount of items to process in each batch
-        params: A dict of parameter names to parameter values that should be updated.
-        forward_prop_func: A function that follows the forward_prop API
+        batch_size: The am2c: A function that follows the forward_prop API
         backward_prop_func: A function that follows the backwards_prop API
 
     Returns: This function returns nothing.

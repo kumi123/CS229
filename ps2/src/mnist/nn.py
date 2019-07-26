@@ -117,6 +117,7 @@ def forward_prop(data, labels, params):
     return a_hidden, out, avg_loss
     # *** END CODE HERE ***
 
+
 def backward_prop(data, labels, params, forward_prop_func):
     """
     Implement the backward propegation gradient computation step for a neural network

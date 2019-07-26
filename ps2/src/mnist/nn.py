@@ -209,6 +209,7 @@ def backward_prop_regularized(data, labels, params, forward_prop_func, reg):
     unreg_grads = backward_prop(data, labels, params, forward_prop_func)
     W1 = params["W1"]
     W2 = params["W2"]
+    grads = dict()
     grads["W1"] = unreg_grads["W1"] + 2 * reg * W1
     grads["W2"] = unreg_grads["W2"] + 2 * reg * W2
     grads["b1"] = unreg_grads["b1"]

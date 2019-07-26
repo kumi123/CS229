@@ -314,7 +314,8 @@ def run_train_test(name, all_data, all_labels, backward_prop_func, num_epochs):
     ax1.plot(t, cost_dev, 'b', label='dev')
     ax1.set_xlabel('epochs')
     ax1.set_ylabel('loss')
-    ax1.set_title('With Regularization')
+    # ax1.set_title('With Regularization')
+    ax1.set_title(name)
     ax1.legend()
 
     ax2.plot(t, accuracy_train,'r', label='train')

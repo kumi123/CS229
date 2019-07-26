@@ -242,7 +242,7 @@ def gradient_descent_epoch(train_data, train_labels, learning_rate, batch_size, 
         # each mini batch
         x = train_data[index-batch_size:index, :]
         y = train_labels[index-batch_size:index, :]
-        grads = backward_prop(x, y, params, forward_prop_func)
+        grads = backward_prop_func(x, y, params, forward_prop_func)
         # update gradient
         for var in params.keys():
             params[var] -= learning_rate * grads[var]

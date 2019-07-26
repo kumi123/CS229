@@ -158,7 +158,7 @@ def backward_prop(data, labels, params, forward_prop_func):
     a1, a2, l = forward_prop_func(data, labels, params)
     # ==== Vectorized Version
     delta2 = (a2 - labels).reshape(N, K)
-    delta1 = (delta2 @ W2.T) * a1 * (1 - a1)
+    delta1 = (delta2 @ W2.T) * (a1 * (1 - a1))
 
     dW2 = a1.T @ delta2
     assert dW2.shape == W2.shape

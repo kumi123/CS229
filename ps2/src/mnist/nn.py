@@ -113,7 +113,7 @@ def forward_prop(data, labels, params):
     # print("Hidden shape:", a_hidden.shape)
     out = softmax(np.matmul(a_hidden, params["W2"]) + params["b2"])
     # print("Out shape:", out.shape)
-    epsilon = 1e-16  # In some extreme cases, out = 0.
+    epsilon = 1e-32  # In some extreme cases, out = 0.
     loss = - np.multiply(labels, np.log(out + epsilon))
     loss = loss.sum() / N
     # loss = -1.0 * np.array([

@@ -206,42 +206,14 @@ def backward_prop_regularized(data, labels, params, forward_prop_func, reg):
             W1, W2, b1, and b2
     """
     # *** START CODE HERE ***
-    N, input_size = data.shape
-    K = labels.shape[1]
-    H = params["W2"].shape[0]  # Hidden size
-    # Retrive params
+    unreg_grads = backward_prop(data, labels, params, forward_prop_func)
     W1 = params["W1"]
     W2 = params["W2"]
-    b1 = params["b1"]
-    b2 = params["b2"]
-    # Forward pass
-    a1, a2, l = forward_prop_func(data, labels, params)
-
-    delta2 = (a2 - labels).reshape(N, K)
-    delta1 = (delta2 @ W2.T) * (a1 * (1 - a1))
-
-    dW2 = a1.T @ delta2
-    assert dW2.shape == W2.shape
-    dW1 = data.T @ delta1
-    assert dW1.shape == W1.shape
-
-    # Regularization term
-    dW1 += 2 * reg * W1
-    dW2 += 2 * reg * W2
-
-    db2 = np.sum(delta2, axis=0)
-    # assert np.all(db2.shape == b2), f"Shape got: {db2.shape}, expected: {b2.shape}"
-    assert len(db2) == len(b2)
-    db1 = np.sum(delta1, axis=0)
-    # assert np.all(db1.shape == b1), f"Shape got: {db1.shape}, expected: {b1.shape}"
-    assert len(db2) == len(b2)
-
-    return {
-        "W1": dW1 / N,
-        "W2": dW2 / N,
-        "b1": db1 / N,
-        "b2": db2 / N,
-    }
+    grads["W1"] = unreg_grads["W1"] + 2 * reg * W1
+    grads["W2"] = unreg_grads["W2"] + 2 * reg * W2
+    grads["b1"] = unreg_grads["b1"]
+    grads["b2"] = unreg_grads["b2"]
+    return grads
     # *** END CODE HERE ***
 
 def gradient_descent_epoch(train_data, train_labels, learning_rate, batch_size, params, forward_prop_func, backward_prop_func):

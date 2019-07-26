@@ -113,13 +113,17 @@ def forward_prop(data, labels, params):
     # print("Hidden shape:", a_hidden.shape)
     out = softmax(np.matmul(a_hidden, params["W2"]) + params["b2"])
     # print("Out shape:", out.shape)
-    loss = -1.0 * np.array([
-        np.dot(labels[i, :], out[i, :])
-        for i in range(N)
-        ])
+    epsilon = 1e-16  # In some extreme cases, out = 0.
+    loss = - np.multiply(labels, np.log(out + epsilon))
+    loss = loss.sum() / N
+    # loss = -1.0 * np.array([
+    #     np.dot(labels[i, :], out[i, :])
+    #     for i in range(N)
+    #     ])
     # print("loss shape:", loss.shape)
-    avg_loss = np.mean(loss)
-    return a_hidden, out, avg_loss
+    # loss = np.mean(loss)
+    # print("loss: ", loss)
+    return a_hidden, out, loss
     # *** END CODE HERE ***
 
 
@@ -166,9 +170,11 @@ def backward_prop(data, labels, params, forward_prop_func):
     assert dW1.shape == W1.shape
 
     db2 = np.sum(delta2, axis=0)
-    assert db2.shape == b2
+    # assert np.all(db2.shape == b2), f"Shape got: {db2.shape}, expected: {b2.shape}"
+    assert len(db2) == len(b2)
     db1 = np.sum(delta1, axis=0)
-    assert db1.shape == b1
+    # assert np.all(db1.shape == b1), f"Shape got: {db1.shape}, expected: {b1.shape}"
+    assert len(db2) == len(b2)
     return {
         "W1": dW1 / N,
         "W2": dW2 / N,

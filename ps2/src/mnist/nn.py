@@ -139,6 +139,49 @@ def backward_prop(data, labels, params, forward_prop_func):
             W1, W2, b1, and b2
     """
     # *** START CODE HERE ***
+    N, input_size = data.shape
+    K = labels.shape[1]
+    H = params["W2"].shape[0]  # Hidden size
+    # Retrive params
+    W1 = params["W1"]
+    W2 = params["W2"]
+    b1 = params["b1"]
+    b2 = params["b2"]
+    # Report
+    print(f"Input size: {input_size}, num labels: {K}, hidden size: {H}")
+    # Forward pass
+    a1, a2, l = forward_prop_func(data, labels, params)
+    # Placeholders for derivates/gradients
+    dW1 = np.zeros_like(W1)
+    dW2 = np.zeros_like(W2)
+    db1 = np.zeros_like(b1)
+    db2 = np.zeros_like(b2)
+    # Backward: accumulate over training instances
+    for i in range(N):
+        # delta2 := D[J, z2]
+        delta2 = (a2[i, :] - labels[i, :])
+        assert delta2.shape == (1, K)
+        dW2 += np.matmul(a1[i, :].T, delta2)
+        db2 += delta2
+        # delta1 := D[J, z1]
+        dz2_da1 = W2.T  # (K, H)
+        assert dz2_da1.shape == (K, H)
+        da1_dz1 = np.diag([
+            a1[i, j] * (1 - a1[i, j])
+            for j in range(H)
+        ])  # (H, H) Derivative of sigmoid.
+        assert da1_dz1.shape == (H, H)
+        delta1 = np.matmul(delta2, dz2_da1)
+        delta1 = np.matmul(delta1, da1_dz1)
+        assert delta1.shape == (1, H)
+        dW1 += np.matmul(data[i, :].T, delta1)
+        db1 += delta1
+    return {
+        "W1": dW1,
+        "W2": dW2,
+        "b1": db1,
+        "b2": db2,
+    }
     # *** END CODE HERE ***
 
 
@@ -205,6 +248,7 @@ def nn_train(
     accuracy_train = []
     accuracy_dev = []
     for epoch in range(num_epochs):
+        print(epoch)
         gradient_descent_epoch(train_data, train_labels, 
             learning_rate, batch_size, params, forward_prop_func, backward_prop_func)
 

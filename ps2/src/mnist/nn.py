@@ -210,8 +210,8 @@ def backward_prop_regularized(data, labels, params, forward_prop_func, reg):
     W1 = params["W1"]
     W2 = params["W2"]
     grads = dict()
-    grads["W1"] = unreg_grads["W1"] + 2 * reg * W1
-    grads["W2"] = unreg_grads["W2"] + 2 * reg * W2
+    grads["W1"] = unreg_grads["W1"] + (2 * reg) * W1
+    grads["W2"] = unreg_grads["W2"] + (2 * reg) * W2
     grads["b1"] = unreg_grads["b1"]
     grads["b2"] = unreg_grads["b2"]
     return grads
@@ -265,13 +265,12 @@ def nn_train(
     accuracy_train = []
     accuracy_dev = []
     for epoch in range(num_epochs):
-        print(epoch)
-        gradient_descent_epoch(train_data, train_labels, 
-            learning_rate, batch_size, params, forward_prop_func, backward_prop_func)
+        print("Training Step: ", epoch)
+        gradient_descent_epoch(train_data, train_labels, learning_rate, batch_size, params, forward_prop_func, backward_prop_func)
 
         h, output, cost = forward_prop_func(train_data, train_labels, params)
         cost_train.append(cost)
-        accuracy_train.append(compute_accuracy(output,train_labels))
+        accuracy_train.append(compute_accuracy(output, train_labels))
         h, output, cost = forward_prop_func(dev_data, dev_labels, params)
         cost_dev.append(cost)
         accuracy_dev.append(compute_accuracy(output, dev_labels))
@@ -367,7 +366,7 @@ def main():
         'dev': dev_labels,
         'test': test_labels,
     }
-    
+
     run_train_test('baseline', all_data, all_labels, backward_prop, args.num_epochs)
     run_train_test('regularized', all_data, all_labels, 
         lambda a, b, c, d: backward_prop_regularized(a, b, c, d, reg=0.0001),

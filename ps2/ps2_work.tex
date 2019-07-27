@@ -447,7 +447,8 @@
 		\begin{align}
 			\theta_{MAP} &= \argmin_\theta \frac{1}{2\sigma^2} \norm{y - X\theta}_2^2 + d \log(2b) + \frac{1}{b} \norm{\theta}_1 \\
 			&= \argmin_\theta \norm{y - X\theta}_2^2 + \frac{2\sigma^2}{b} \norm{\theta}_1 \\
-			&= \argmin_\theta \norm{y - X\theta}_2^2 + \gamma \norm{\theta}_1
+			&= \argmin_\theta \norm{y - X\theta}_2^2 + \gamma \norm{\theta}_1 \\
+			&= \argmin_\theta J(\theta)
 		\end{align}
 		where $\gamma := \frac{2\sigma^2}{b}$.
 	\end{proof}

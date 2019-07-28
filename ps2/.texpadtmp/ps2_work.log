@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  27 JUL 2019 17:01
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  28 JUL 2019 10:56
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -839,39 +839,39 @@ Overfull \hbox (2.1715pt too wide) in paragraph at lines 85--86
  []
 
 [9] [10] [11]
-LaTeX Font Info:    Try loading font information for U+dsrom on input line 118.
+LaTeX Font Info:    Try loading font information for U+dsrom on input line 122.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/doublestroke/Udsrom.fd
 File: Udsrom.fd 1995/08/01 v0.1 Double stroke roman font definitions
 ) [12] [13] [14] [15] [16] [17] [18] [19] [20] <src/perceptron/perceptron_dot_output.png, id=312, 867.24pt x 578.16pt>
 File: src/perceptron/perceptron_dot_output.png Graphic file (type png)
  <use src/perceptron/perceptron_dot_output.png>
-Package pdftex.def Info: src/perceptron/perceptron_dot_output.png used on input line 286.
+Package pdftex.def Info: src/perceptron/perceptron_dot_output.png used on input line 290.
 (pdftex.def)             Requested size: 281.85587pt x 187.89977pt.
  <src/perceptron/perceptron_rbf_output.png, id=313, 867.24pt x 578.16pt>
 File: src/perceptron/perceptron_rbf_output.png Graphic file (type png)
  <use src/perceptron/perceptron_rbf_output.png>
-Package pdftex.def Info: src/perceptron/perceptron_rbf_output.png used on input line 292.
+Package pdftex.def Info: src/perceptron/perceptron_rbf_output.png used on input line 296.
 (pdftex.def)             Requested size: 281.85587pt x 187.89977pt.
  [21 <./src/perceptron/perceptron_dot_output.png> <./src/perceptron/perceptron_rbf_output.png>] [22] <src/mnist/baseline.pdf, id=327, 462.52798pt x 346.89601pt>
 File: src/mnist/baseline.pdf Graphic file (type pdf)
  <use src/mnist/baseline.pdf>
-Package pdftex.def Info: src/mnist/baseline.pdf used on input line 305.
+Package pdftex.def Info: src/mnist/baseline.pdf used on input line 309.
 (pdftex.def)             Requested size: 462.52684pt x 346.89516pt.
  [23 <./src/mnist/baseline.pdf>] <src/mnist/regularized.pdf, id=366, 462.52798pt x 346.89601pt>
 File: src/mnist/regularized.pdf Graphic file (type pdf)
  <use src/mnist/regularized.pdf>
-Package pdftex.def Info: src/mnist/regularized.pdf used on input line 313.
+Package pdftex.def Info: src/mnist/regularized.pdf used on input line 317.
 (pdftex.def)             Requested size: 462.52684pt x 346.89516pt.
  [24 <./src/mnist/regularized.pdf>] [25] [26] [27] [28] [29]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 460.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 464.
  [30]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 460.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 464.
  (/Users/tianyudu/Documents/UToronto/2019 Summer Exchange/Stanford Summer Session/CS229/Problem Sets/CS229/ps2/.texpadtmp/ps2_work.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 460.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 460.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 464.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 464.
 Package rerunfilecheck Info: File `ps2_work.out' has not changed.
 (rerunfilecheck)             Checksum: <no file>.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 460.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 464.
  ) 
 Here is how much of TeX's memory you used:
  10901 strings out of 493014
@@ -882,7 +882,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  44i,16n,87p,1024b,480s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/doublestroke/dsrom10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on "/Users/tianyudu/Documents/UToronto/2019 Summer Exchange/Stanford Summer Session/CS229/Problem Sets/CS229/ps2/.texpadtmp/ps2_work.pdf" (30 pages, 336350 bytes).
+Output written on "/Users/tianyudu/Documents/UToronto/2019 Summer Exchange/Stanford Summer Session/CS229/Problem Sets/CS229/ps2/.texpadtmp/ps2_work.pdf" (30 pages, 336192 bytes).
 PDF statistics:
  577 PDF objects out of 1000 (max. 8388607)
  456 compressed objects within 5 object streams

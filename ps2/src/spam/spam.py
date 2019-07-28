@@ -137,7 +137,9 @@ def fit_naive_bayes_model(matrix, labels):
         prob = total / denominator
         assert np.abs(np.sum(prob) - 1.0) < 1e-10, f"received: {np.sum(prob)}"
         phi_vocab[y, :] = prob
-    assert np.all(np.sum(phi_vocab, axis=1) == np.ones([2]))
+    assert np.all(
+        (np.sum(phi_vocab, axis=1) - np.ones([2]) <= 1e-10)
+        )
     # phi(y)
     phi_class[0] = np.mean(labels == 0)
     phi_class[1] = np.mean(labels == 1)

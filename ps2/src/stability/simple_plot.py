@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 
-def plot(x, y, save_path=None):
+def plot(x, y, save_path=None, abline: bool = False):
     """Visualize dataset for binary classification.
 
     Args:
@@ -17,6 +17,12 @@ def plot(x, y, save_path=None):
     # Add labels and save to disk
     plt.xlabel('x1')
     plt.ylabel('x2')
+
+    if abline:
+        abline_x = [0, 1]
+        abline_y = [1, 0]
+        plt.plot(abline_x, abline_y)
+
     if save_path is None:
         plt.show()
     else:

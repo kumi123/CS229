@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  28 JUL 2019 10:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  29 JUL 2019 12:25
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -828,12 +828,12 @@ File: ./src/stability/ds1_a.png Graphic file (type png)
  <use ./src/stability/ds1_a.png>
 Package pdftex.def Info: ./src/stability/ds1_a.png used on input line 38.
 (pdftex.def)             Requested size: 234.8775pt x 176.15768pt.
- <./src/stability/ds1_b.png, id=150, 462.528pt x 346.896pt>
-File: ./src/stability/ds1_b.png Graphic file (type png)
- <use ./src/stability/ds1_b.png>
-Package pdftex.def Info: ./src/stability/ds1_b.png used on input line 39.
+ <./src/stability/ds1_b_abline.png, id=150, 462.528pt x 346.896pt>
+File: ./src/stability/ds1_b_abline.png Graphic file (type png)
+ <use ./src/stability/ds1_b_abline.png>
+Package pdftex.def Info: ./src/stability/ds1_b_abline.png used on input line 39.
 (pdftex.def)             Requested size: 234.8775pt x 176.15768pt.
- [3 <./src/stability/ds1_a.png> <./src/stability/ds1_b.png>] [4] [5] [6] [7] [8]
+ [3 <./src/stability/ds1_a.png> <./src/stability/ds1_b_abline.png>] [4] [5] [6] [7] [8]
 Overfull \hbox (2.1715pt too wide) in paragraph at lines 85--86
  []\OT1/cmr/bx/n/10.95 Result[] \OT1/cmtt/m/n/10.95 The top 5 indicative words for Naive Bayes are: ['claim', 'won', 'prize',
  []
@@ -875,14 +875,14 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 464.
  ) 
 Here is how much of TeX's memory you used:
  10901 strings out of 493014
- 158739 string characters out of 6133351
+ 158774 string characters out of 6133351
  289346 words of memory out of 5000000
  14060 multiletter control sequences out of 15000+600000
  13456 words of font info for 52 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  44i,16n,87p,1024b,480s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/doublestroke/dsrom10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on "/Users/tianyudu/Documents/UToronto/2019 Summer Exchange/Stanford Summer Session/CS229/Problem Sets/CS229/ps2/.texpadtmp/ps2_work.pdf" (30 pages, 336192 bytes).
+Output written on "/Users/tianyudu/Documents/UToronto/2019 Summer Exchange/Stanford Summer Session/CS229/Problem Sets/CS229/ps2/.texpadtmp/ps2_work.pdf" (30 pages, 343718 bytes).
 PDF statistics:
  577 PDF objects out of 1000 (max. 8388607)
  456 compressed objects within 5 object streams

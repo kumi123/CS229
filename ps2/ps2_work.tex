@@ -36,10 +36,10 @@
 	\begin{figure}[h]
 	    \centering
 	    \subfloat[Dataset A]{{\includegraphics[width=0.5\linewidth]{./src/stability/ds1_a.png}}}
-	    \subfloat[Dataset B]{{\includegraphics[width=0.5\linewidth]{./src/stability/ds1_b.png}}}
+	    \subfloat[Dataset B]{{\includegraphics[width=0.5\linewidth]{./src/stability/ds1_b_abline.png}}}
 	    \caption{Two Datasets}
 	\end{figure}
-	\paragraph{Comment} From the plot of two datasets we can see that dataset B is more \emph{linearly separable} than dataset A. There exists intermixing of data points belonging to both classes in dataset A, but fewer can be observed in dataset B. The linear separability of dataset B causes the instability of logistic regression on it. In the scenario of dataset B, we claim that the gradient descent algorithm increases $\theta$ indefinitely without convergence.
+	\paragraph{Comment} From the plot of two datasets we can see that dataset B is more \emph{linearly separable} than dataset A (See the oblique line in the plot). There exists intermixing of data points belonging to both classes in dataset A, but fewer can be observed in dataset B. The linear separability of dataset B causes the instability of logistic regression on it. In the scenario of dataset B, we claim that the gradient descent algorithm increases $\theta$ indefinitely without convergence.
 	\begin{proof}
 		Let $\mc{A}$ and $\mc{B}$ denote two datasets respectively.
 %		The gradient descent for logistic regression works as
@@ -61,7 +61,7 @@
 		\paragraph{Comment}
 		\begin{enumerate}[(i)]
 			\item (NO) A different constant learning rate won't help because the $\nabla_\theta \ell(\theta)$ does not vanish, and the update step $\alpha \nabla_\theta \ell(\theta)$ is always significant. Therefore, convergence is still not achievable.
-			\item (NO) Annealing the learning rate will not mitigate the problem because this does not change the fact that the maximum of $\ell$ is achieved when $\theta \to \infty$.
+			\item (NO) Annealing the learning rate will not mitigate the problem because this does not change the fact that the maximum of $\ell$ is achieved when $\theta \to \infty$, it really depends on the gradient of $\nabla_\theta J(\theta)$, if $\norm{\nabla_\theta J(\theta)}$ does not increase more than quadratic order, then multiplying $\frac{1}{t^2}$ could help the algorithm to converge, but still, this kind of convergence just indicates the algorithm halts, but does not indicate the $\theta$ converges to a minimum. If the norm of gradient increases faster than quadratic order, the algorithm will not converge neither. Therefore, learning rate decaying may help the training seems to converge, but it does not cure the underlying problem ($\theta_{MLE}$ does not exist).
 			\item (NO) Linear scaling does not change the fact that dataset is well (linearly) separable, $\theta$ is still going to explode indefinitely.
 			\item (YES) Adding regularization helps. As mentioned before, the main cause of interminability of gradient ascent is $\ell(\theta)$ can always be increased by inflating $\theta$ (i.e. increasing $\norm{\theta}$). The regularizing term prevents $\theta$ from exploding and enforce the convergence.
 			\item (YES) Give the variance of noise is large enough, the noise helps eliminate the linear separability of data, so that the dataset becomes intermixing.

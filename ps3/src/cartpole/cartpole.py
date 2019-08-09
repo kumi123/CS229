@@ -152,7 +152,7 @@ def choose_action(state, mdp_data):
     # *** END CODE HERE ***
 
 
-def update_mdp_transition_counts_reward_counts(mdp_data, state, action, new_state, reward):
+def update_mdp_transition_counts_reward_counts(mdp_data, state, action, new_state, reward) -> None:
     """
     Update the transition count and reward count information in your mdp_data. 
     Do not change the other MDP parameters (those get changed later).
@@ -173,10 +173,16 @@ def update_mdp_transition_counts_reward_counts(mdp_data, state, action, new_stat
     """
 
     # *** START CODE HERE ***
+    # *** Update transition counts
+    mdp_data["P_records"][state, action, new_state] += 1
+    # *** Update reward counts
+    mdp_data["R_accumulated"][new_state] += reward
+    mdp_data["R_counts"][new_state] += 1
     # *** END CODE HERE ***
 
     # This function does not return anything
     return
+
 
 def update_mdp_transition_probs_reward(mdp_data):
     """

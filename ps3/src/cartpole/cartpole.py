@@ -175,7 +175,7 @@ def update_mdp_transition_counts_reward_counts(mdp_data, state, action, new_stat
     # *** START CODE HERE ***
     # *** Update transition counts
     mdp_data["P_records"][state, action, new_state] += 1
-    # *** Update reward counts
+    # *** Update reward counts R(new_State)
     mdp_data["R_accumulated"][new_state] += reward
     mdp_data["R_counts"][new_state] += 1
     # *** END CODE HERE ***

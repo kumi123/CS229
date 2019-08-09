@@ -102,17 +102,27 @@ def initialize_mdp_data(num_states: int) -> dict:
     """
     # *** START CODE HERE ***
     # Initialize value functions.
-    
-
+    V = np.random.uniform(low=0.0, high=0.1, size=num_states)
     # Transition Probability: a numpy array @(num_states, 2, num_states)
     # P[i, a, j] := prob. trans. from i to j via action a.
-    p = np.zeros([num_states, 2, num_states])
+    P = np.zeros([num_states, 2, num_states])
     # Initialize to uniform distribution, so that for all P[i, a, j] = 1 / num_states
-    p[:, :, :] = 1 / num_states
-    # *** END CODE HERE ***
-
+    P[:, :, :] = 1 / num_states
+    P_records = np.zeros([num_states, 2, num_states])  # MLE Prob. = p_r[i, a, j] / sum(p_r[i, a, :])
     # Initialize R(s) <- 0 for every state
-    s = np.zeros([num_states])
+    R = np.zeros([num_states])
+    # Est = R_accumulated / R_counts
+    R_accumulated = np.zeros([num_states])
+    R_counts = np.zeros([num_states])
+
+    mdp = {
+        "V": V, "P": P, "R": R,
+        "P_records": P_records,
+        "R_accumulated": R_accumulated,
+        "R_counts": R_counts
+    }
+    return mdp
+    # *** END CODE HERE ***
 
 
 def choose_action(state, mdp_data):

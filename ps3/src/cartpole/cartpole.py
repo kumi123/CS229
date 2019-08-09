@@ -139,7 +139,18 @@ def choose_action(state, mdp_data):
     """
 
     # *** START CODE HERE ***
+    # The action chosen would be the one deliver maximum expected reward.
+    expect_rewards = list()
+    for a in [0, 1]:
+        exp_r = np.dot(mdp_data["P"][state, a, :], mdp_data["R"])
+        expect_rewards.append(exp_r)
+    # If the expected returns on both actions were the same.
+    if expect_rewards[0] == expect_rewards[1]:
+        return np.random.choice([0, 1])
+    return np.argmax(expect_rewards)
+
     # *** END CODE HERE ***
+
 
 def update_mdp_transition_counts_reward_counts(mdp_data, state, action, new_state, reward):
     """

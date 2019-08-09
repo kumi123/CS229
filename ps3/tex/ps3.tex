@@ -1,0 +1,57 @@
+
+
+\def\qtr{Summer 2019}
+\def\due{Monday, Aug 12 at 11:59 pm}
+\def\piazza{\url{http://piazza.com/stanford/summer2019/cs229}}
+\def\psetnum{3 }
+
+%%% Change the following flag to toggle between questions or solutions
+\ifdefined\solutions {} \else \def\solutions{1} \fi
+
+\input{macros.tex}
+
+\begin{document}
+
+\pagestyle{myheadings} \markboth{}{CS229 Problem Set \#\psetnum}
+
+\ifnum\solutions=1{
+{\huge\noindent CS 229, \qtr\\
+Problem Set \#\psetnum Solutions}\\\\
+YOUR NAME HERE (\texttt{YOUR SUNET HERE})
+} \else {\huge
+\noindent CS 229, \qtr\\
+Problem Set \#\psetnum
+} \fi
+
+\ruleskip
+
+{\bf Due {\due } on Gradescope.}
+
+\medskip
+
+\input{00-instructions/00-main}
+
+\begin{enumerate}[wide, labelwidth=!, labelindent=0pt]
+
+
+\clearpage
+\input{cartpole/00-main}
+
+\clearpage
+\input{kl_divergence/00-main}
+
+\clearpage
+\input{k_means/00-main}
+
+\clearpage
+\input{semi_supervised_em/00-main}
+
+\clearpage
+\input{pca/00-main}
+
+\clearpage
+\input{ica/00-main}
+
+\end{enumerate}
+
+\end{document}

@@ -204,7 +204,7 @@ def update_mdp_transition_probs_reward(mdp_data) -> None:
     # *** START CODE HERE ***
     # *** Update estimated probability.
     for s in range(len(mdp_data["R"])):
-        for a in [1, 2]:
+        for a in [0, 1]:
             # update only if the (s, a) pair has been visited.
             if np.sum(mdp_data["P_records"][s, a, :]) > 0:
                 new_dist = mdp_data["P_records"][s, a, :] / np.sum(mdp_data["P_records"][s, a, :])

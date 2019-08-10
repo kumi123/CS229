@@ -140,15 +140,12 @@ def choose_action(state, mdp_data):
 
     # *** START CODE HERE ***
     # The action chosen would be the one deliver maximum expected reward.
-    expect_rewards = list()
-    for a in [0, 1]:
-        exp_r = np.dot(mdp_data["P"][state, a, :], mdp_data["R"])
-        expect_rewards.append(exp_r)
+    expect_rewards = np.array([np.dot(mdp_data["P"][state, a], mdp_data["V"]) for a in [0, 1]])
     # If the expected returns on both actions were the same.
     if expect_rewards[0] == expect_rewards[1]:
         return np.random.choice([0, 1])
     return np.argmax(expect_rewards)
-
+    # return np.argmax(np.sum(mdp_data["P"][state] * mdp_data["V"], axis=1))
     # *** END CODE HERE ***
 
 
@@ -203,12 +200,13 @@ def update_mdp_transition_probs_reward(mdp_data) -> None:
 
     # *** START CODE HERE ***
     # *** Update estimated probability.
+    # *** Loop Approach
     for s in range(len(mdp_data["R"])):
         for a in [0, 1]:
             # update only if the (s, a) pair has been visited.
-            if np.sum(mdp_data["P_records"][s, a, :]) > 0:
-                new_dist = mdp_data["P_records"][s, a, :] / np.sum(mdp_data["P_records"][s, a, :])
-                mdp_data["P"][s, a, :] = new_dist
+            if np.sum(mdp_data["P_records"][s, a]) > 0:
+                new_dist = mdp_data["P_records"][s, a] / np.sum(mdp_data["P_records"][s, a])
+                mdp_data["P"][s, a] = new_dist
     # *** Update estimated reward.
     for s in range(len(mdp_data["R"])):
         # update only if state has been visited.

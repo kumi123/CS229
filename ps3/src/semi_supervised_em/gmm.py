@@ -32,13 +32,12 @@ def main(is_semi_supervised, trial_num):
     # (1) Initialize mu and sigma by splitting the m data points uniformly at random
     # into K groups, then calculating the sample mean and covariance for each group
     mu = np.zeros([K, considered.shape[1]])  # (4, 2)
-    sigma = np.zeros(
-        [K, considered.shape[1], considered.shape[1]])  # (4, 2, 2)
+    sigma = []  # [2, 2] * 4
     random_assignments = np.random.randint(0, K, considered.shape[0])
     for i in range(K):
         in_cluster = considered[random_assignments == i]
         mu[i, :] = np.mean(in_cluster, axis=0)
-        sigma[i, :, :] = np.cov(in_cluster, rowvar=False)
+        sigma.append(np.cov(in_cluster, rowvar=False))
     # (2) Initialize phi to place equal probability on each Gaussian
     # phi should be a numpy array of shape (K,)
     phi = np.ones(K) / K
@@ -90,7 +89,7 @@ def run_em(x, w, phi, mu, sigma):
         pass  # Just a placeholder for the starter code
         # *** START CODE HERE
         # (1) E-step: Update your estimates in w
-
+        w = 
         # (2) M-step: Update the model parameters phi, mu, and sigma
         # (3) Compute the log-likelihood of the data to check for convergence.
         # By log-likelihood, we mean `ll = sum_x[log(sum_z[p(x|z) * p(z)])]`.

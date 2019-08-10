@@ -24,13 +24,19 @@ def main(is_semi_supervised, trial_num):
     x = x_all[~labeled_idxs, :]        # Unlabeled examples
 
     # *** START CODE HERE ***
+    if is_semi_supervised:
+        considered = x_all
+    else:
+        considered = x
+    n = considered.shape[0]
     # (1) Initialize mu and sigma by splitting the m data points uniformly at random
     # into K groups, then calculating the sample mean and covariance for each group
-    mu = np.zeros([K, x_all.shape[1]])  # (4, 2)
-    sigma = np.zeros([K, x_all.shape[1], x_all.shape[1]])  # (4, 2, 2)
-    random_assignments = np.random.randint(0, K, x_all.shape[0])
+    mu = np.zeros([K, considered.shape[1]])  # (4, 2)
+    sigma = np.zeros(
+        [K, considered.shape[1], considered.shape[1]])  # (4, 2, 2)
+    random_assignments = np.random.randint(0, K, considered.shape[0])
     for i in range(K):
-        in_cluster = x_all[random_assignments == i]
+        in_cluster = considered[random_assignments == i]
         mu[i, :] = np.mean(in_cluster, axis=0)
         sigma[i, :, :] = np.cov(in_cluster, rowvar=False)
     # (2) Initialize phi to place equal probability on each Gaussian
@@ -38,7 +44,7 @@ def main(is_semi_supervised, trial_num):
     phi = np.ones(K) / K
     # (3) Initialize the w values to place equal probability on each Gaussian
     # w should be a numpy array of shape (m, K)
-    w = np.ones([x_all.shape[0], K]) / K
+    w = np.ones([considered.shape[0], K]) / K
     # *** END CODE HERE ***
 
     if is_semi_supervised:
@@ -84,6 +90,7 @@ def run_em(x, w, phi, mu, sigma):
         pass  # Just a placeholder for the starter code
         # *** START CODE HERE
         # (1) E-step: Update your estimates in w
+
         # (2) M-step: Update the model parameters phi, mu, and sigma
         # (3) Compute the log-likelihood of the data to check for convergence.
         # By log-likelihood, we mean `ll = sum_x[log(sum_z[p(x|z) * p(z)])]`.

@@ -26,10 +26,19 @@ def main(is_semi_supervised, trial_num):
     # *** START CODE HERE ***
     # (1) Initialize mu and sigma by splitting the m data points uniformly at random
     # into K groups, then calculating the sample mean and covariance for each group
+    mu = np.zeros([K, x_all.shape[1]])  # (4, 2)
+    sigma = np.zeros([K, x_all.shape[1], x_all.shape[1]])  # (4, 2, 2)
+    random_assignments = np.random.randint(0, K, x_all.shape[0])
+    for i in range(K):
+        in_cluster = x_all[random_assignments == i]
+        mu[i, :] = np.mean(in_cluster, axis=0)
+        sigma[i, :, :] = np.cov(in_cluster, rowvar=False)
     # (2) Initialize phi to place equal probability on each Gaussian
     # phi should be a numpy array of shape (K,)
+    phi = np.ones(K) / K
     # (3) Initialize the w values to place equal probability on each Gaussian
     # w should be a numpy array of shape (m, K)
+    w = np.ones([x_all.shape[0], K]) / K
     # *** END CODE HERE ***
 
     if is_semi_supervised:

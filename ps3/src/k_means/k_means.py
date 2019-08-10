@@ -56,7 +56,9 @@ def update_centroids(centroids, image, max_iter=30, print_every=10):
     # *** START YOUR CODE ***
     centroids = centroids.copy()
     flatten = image.reshape(-1, 3)
-    for _ in range(max_iter):
+    for i in range(max_iter):
+        if i % print_every == 0:
+            print("Updating centroid iteration: {}".format(i))
         # assign to nearest centriod
         assignments = []
         for pixel in flatten:

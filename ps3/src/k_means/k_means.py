@@ -61,14 +61,14 @@ def update_centroids(centroids, image, max_iter=30, print_every=10):
         assignments = []
         for pixel in flatten:
             assigned = np.argmin([
-                np.linalg.norm(pixel, c)
+                np.linalg.norm(pixel - c)
                 for c in centroids
             ])
             assignments.append(assigned)
         assignments = np.array(assignments)
-        # update centriods
+        # update centroid
         for i in range(centroids.shape[0]):
-            centriods[i] = np.mean(flatten[assignments == i], axis=0)
+            centroids[i] = np.mean(flatten[assignments == i], axis=0)
     # raise NotImplementedError('update_centroids function not implemented')
         # Usually expected to converge long before `max_iter` iterations
                 # Initialize `dist` vector to keep track of distance to every centroid
@@ -103,7 +103,7 @@ def update_image(image, centroids):
     for i in range(image.shape[0]):
         for j in range(image.shape[1]):
             nearest_centriod = np.argmin([
-                np.linalg.norm(image[i, j, :], c)
+                np.linalg.norm(image[i, j, :] - c)
                 for c in centroids
             ])
             new_image[i, j, :] = centroids[nearest_centriod]

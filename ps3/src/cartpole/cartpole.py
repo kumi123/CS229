@@ -219,7 +219,8 @@ def update_mdp_transition_probs_reward(mdp_data) -> None:
     # This function does not return anything
     return
 
-def update_mdp_value(mdp_data, tolerance, gamma):
+
+def update_mdp_value(mdp_data, tolerance, gamma) -> bool:
     """
     Update the estimated values in your MDP.
 
@@ -229,7 +230,7 @@ def update_mdp_value(mdp_data, tolerance, gamma):
     at the top of the file.
 
     Return true if it converges within one iteration.
-    
+
     Args:
         mdp_data: The data for your MDP. See initialize_mdp_data.
         tolerance: The tolerance to use for the convergence criterion.
@@ -237,11 +238,27 @@ def update_mdp_value(mdp_data, tolerance, gamma):
 
     Returns:
         True if the value iteration converged in one iteration
-
     """
-
     # *** START CODE HERE ***
+    iterations = 0
+    while True:
+        new_val_func = np.zeros_like(mdp_data["V"])
+        for s in range(len(mdp_data["V"])):
+            exp_rewards = [
+                np.dot(mdp_data["V"], mdp_data["P"][s, a, :])
+                for a in [0, 1]
+            ]
+            new_val_func[s] = mdp_data["R"][s] + gamma * max(exp_rewards)
+        delta_all = np.abs(new_val_func - mdp_data["V"])
+        # Update MDP
+        mdp_data["V"] = new_val_func
+        iterations += 1
+        # Check convergence
+        if np.max(delta_all) < tolerance:
+            break
+    return bool(iterations == 1)
     # *** END CODE HERE ***
+
 
 def main():
     # Simulation parameters

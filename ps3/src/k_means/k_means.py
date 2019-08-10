@@ -99,13 +99,21 @@ def update_image(image, centroids):
     """
 
     # *** START YOUR CODE ***
+    new_image = image.copy()
+    for i in range(image.shape[0]):
+        for j in range(image.shape[1]):
+            nearest_centriod = np.argmin([
+                np.linalg.norm(image[i, j, :], c)
+                for c in centroids
+            ])
+            new_image[i, j, :] = centroids[nearest_centriod]
     # raise NotImplementedError('update_image function not implemented')
             # Initialize `dist` vector to keep track of distance to every centroid
             # Loop over all centroids and store distances in `dist`
             # Find closest centroid and update pixel value in `image`
     # *** END YOUR CODE ***
 
-    return image
+    return new_image
 
 
 def main(args):

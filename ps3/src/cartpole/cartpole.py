@@ -184,7 +184,7 @@ def update_mdp_transition_counts_reward_counts(mdp_data, state, action, new_stat
     return
 
 
-def update_mdp_transition_probs_reward(mdp_data):
+def update_mdp_transition_probs_reward(mdp_data) -> None:
     """
     Update the estimated transition probabilities and reward values in your MDP.
 
@@ -192,7 +192,7 @@ def update_mdp_transition_probs_reward(mdp_data):
     been tried before, or the state has never been visited before. In that
     case, you must not change that component (and thus keep it at the
     initialized uniform distribution).
-    
+
     Args:
         mdp_data: The data for your MDP. See initialize_mdp_data.
 
@@ -202,6 +202,18 @@ def update_mdp_transition_probs_reward(mdp_data):
     """
 
     # *** START CODE HERE ***
+    # *** Update estimated probability.
+    for s in range(len(mdp_data["R"])):
+        for a in [1, 2]:
+            # update only if the (s, a) pair has been visited.
+            if np.sum(mdp_data["P_records"][s, a, :]) > 0:
+                new_dist = mdp_data["P_records"][s, a, :] / np.sum(mdp_data["P_records"][s, a, :])
+                mdp_data["P"][s, a, :] = new_dist
+    # *** Update estimated reward.
+    for s in range(len(mdp_data["R"])):
+        # update only if state has been visited.
+        if mdp_data["R_counts"][s] > 0:
+            mdp_data["R"][s] = mdp_data["R_accumulated"][s] / mdp_data["R_counts"][s]
     # *** END CODE HERE ***
 
     # This function does not return anything

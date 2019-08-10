@@ -242,15 +242,22 @@ def update_mdp_value(mdp_data, tolerance, gamma) -> bool:
     # *** START CODE HERE ***
     iterations = 0
     while True:
-        new_val_func = np.zeros_like(mdp_data["V"])
-        for s in range(len(mdp_data["V"])):
-            exp_rewards = [
-                np.dot(mdp_data["V"], mdp_data["P"][s, a, :])
-                for a in [0, 1]
-            ]
-            new_val_func[s] = mdp_data["R"][s] + gamma * max(exp_rewards)
-        delta_all = np.abs(new_val_func - mdp_data["V"])
+        # *** Vectorized Approach ***
+        new_val_func = mdp_data["R"] + gamma * np.max(
+            np.sum(mdp_data["P"] * mdp_data["V"], axis=2),
+            axis=1
+        )
+        # *** Loop Approach ***
+        # new_val_func = np.zeros_like(mdp_data["V"])
+        # for s in range(len(mdp_data["V"])):
+        #     exp_rewards = [
+        #         np.dot(mdp_data["V"], mdp_data["P"][s, a, :])
+        #         for a in [0, 1]
+        #     ]
+        #     new_val_func[s] = mdp_data["R"][s] + gamma * max(exp_rewards)
+        # *** End ***
         # Update MDP
+        delta_all = np.abs(new_val_func - mdp_data["V"])
         mdp_data["V"] = new_val_func
         iterations += 1
         # Check convergence

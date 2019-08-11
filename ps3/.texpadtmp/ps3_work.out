@@ -1,0 +1,7 @@
+\BOOKMARK [1][-]{section.1}{Problem 4: Semi-supervised EM}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{\(a\) Convergence}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{\(b\) Semi-supervised E-step}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{\(c\) Semi-supervised M-step}{section.1}% 4
+\BOOKMARK [3][-]{subsubsection.1.3.1}{Choosing \(t+1\)}{subsection.1.3}% 5
+\BOOKMARK [2][-]{subsection.1.4}{Choosing }{section.1}% 6
+\BOOKMARK [2][-]{subsection.1.5}{Choosing }{section.1}% 7

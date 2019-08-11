@@ -1,0 +1,223 @@
+\documentclass[11pt]{article}
+\usepackage{spikey}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{soul}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{chngcntr}
+\usepackage{centernot}
+\usepackage{datetime}
+\usepackage[shortlabels]{enumitem}
+
+\usepackage[margin=1truein]{geometry}
+\usepackage{setspace}
+\linespread{1.15}
+
+\counterwithin{equation}{section}
+\newcommand{\upi}[0]{^{(i)}}
+\newcommand{\upj}[0]{^{(j)}}
+\newcommand{\upk}[0]{^{(k)}}
+\newcommand{\upl}[0]{^{(\ell)}}
+
+\title{CS229 Problem Set 3}
+\date{\today}
+\author{Tianyu Du}
+\begin{document}
+	\maketitle
+	\section{Problem 4: Semi-supervised EM}
+	\subsection{(a) Convergence}
+	\begin{proof}
+		\begin{align}
+			\ell_{\tx{semi-sup}}(\theta^{(t+1)}) &= \ell_{\tx{unsup}}(\theta^{(t+1)}) + \alpha \ell_{\tx{sup}}(\theta^{(t+1)}) \\
+			&= \sum_{i=1}^n \log \left(
+			\sum_{z\upi} Q^{(t)}_i \frac{p(x\upi, z\upi; \theta^{(t+1)})}{Q^{(t)}_i}
+			\right) + \alpha \ell_{\tx{sup}}(\theta^{(t+1)}) \\
+			&= \sum_{i=1}^n \log \mathbb{E}_{z\upi \sim Q^{(t)}_i} \left[\frac{p(x\upi, z\upi; \theta^{(t+1)})}{Q^{(t)}_i}\right] + \alpha \ell_{\tx{sup}}(\theta^{(t+1)}) \\
+			&\geq \sum_{i=1}^n \mathbb{E}_{z\upi \sim Q^{(t)}_i} \left[\log \frac{p(x\upi, z\upi; \theta^{(t+1)})}{Q^{(t)}_i}\right] + \alpha \ell_{\tx{sup}}(\theta^{(t+1)}) \because \tx{Jensen's Inequality} \\
+			&= \sum_{i=1}^n \sum_{z\upi} Q^{(t)}_i \log \left( \frac{p(x\upi, z\upi; \theta^{(t+1)})}{Q^{(t)}_i}\right ) + \alpha \ell_{\tx{sup}}(\theta^{(t+1)}) \\
+			&\geq \sum_{i=1}^n \sum_{z\upi} Q^{(t)}_i \log \left( \frac{p(x\upi, z\upi; \theta^{(t)})}{Q^{(t)}_i}\right ) + \alpha \ell_{\tx{sup}}(\theta^{(t)}) \because \tx{M-step is maximizing w.r.t. $\theta$} \\
+			&= \sum_{i=1}^n \log \left( \sum_{z\upi} Q^{(t)}_i \frac{p(x\upi, z\upi; \theta^{(t)})}{Q^{(t)}_i}\right ) + \alpha \ell_{\tx{sup}}(\theta^{(t)}) \\
+			&= \ell_{\tx{semi-sup}}(\theta^{(t)})
+		\end{align}
+		The last two steps were derive from the fact that $Q(\cdot)$ was specifically chosen in the E-step so that $\ell_{\tx{semi-sup}}(\theta^{(t)})$ was equal to it's ELBO.
+	\end{proof}
+	\newpage
+	\subsection{(b) Semi-supervised E-step}
+	\paragraph{Answer} $z\upi$ for all unlabelled examples should be estimated. Specifically, posterior $p(z\upi | x\upi; \mu, \Sigma, \phi)$ for all $i \in \{1,\cdots,n\}$ are estimated. Define $w\upi_j = p(z\upi = j | x\upi; \mu, \Sigma, \phi)$.
+	\begin{proof}
+		\begin{align}
+		w\upi_j &:= p(z\upi = j| x\upi; \mu, \Sigma, \phi) \\
+		&= \frac{p(x\upi|z\upi = j; \mu, \Sigma, \phi) p(z\upi = j; \mu, \Sigma, \phi)}{p(x\upi; \mu, \Sigma, \phi)} \\
+		&= \frac{p(x\upi|z\upi = j; \mu, \Sigma, \phi) p(z\upi = j; \mu, \Sigma, \phi)}{\sum_{\ell=1}^k \left \{p(x\upi|z\upi = \ell; \mu, \Sigma, \phi) p(z\upi = \ell; \mu, \Sigma, \phi) \right\}} \\
+		&= \frac{
+		 \frac{1}{(2\pi)^{d/2} |\Sigma_j|^{1/2}} \exp \left[
+		 	- \frac{1}{2} (x\upi - \mu_j)^T \Sigma_j^{-1} (x\upi - \mu_j) \right] \phi_j
+		}{
+		 \sum_{\ell=1}^k \left\{
+		 	\frac{1}{(2\pi)^{d/2} |\Sigma_\ell|^{1/2}} \exp \left[
+		 	- \frac{1}{2} (x\upi - \mu_\ell)^T \Sigma_\ell^{-1} (x\upi - \mu_\ell)\right] \phi_\ell
+		 \right\}
+		}
+		\end{align}
+	\end{proof}
+	\newpage
+	\subsection{(c) Semi-supervised M-step}
+	\subsubsection{Choosing $\mu_\ell^{(t+1)}$}
+	\paragraph{Answer} Let $\Theta := \{\mu_\ell, \Sigma_\ell, \phi_\ell\}_{\ell=1}^k$. The first order condition is for optimal $\mu_\ell$ is:
+	\begin{proof}
+		\begin{align}
+			\nabla{\mu_\ell}\ \ell_{\tx{semi-sup}}(\Theta) &= \nabla{\mu_\ell}\ \sum_{i=1}^n \sum_{j=1}^k w\upi_j \log \left( \frac{p(x\upi, z\upi; \Theta)}{w\upi_j} \right) + \alpha \sum_{i=1}^{\tilde{n}} \log \left(p(\tilde{x}\upi, \tilde{z}\upi; \Theta)
+			\right) \\
+			&= \nabla_{\mu_\ell}\ \sum_{i=1}^n w\upi_\ell \log \left( \frac{p(x\upi, z\upi; \Theta)}{w\upi_\ell} \right) + \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell} \log \left(p(\tilde{x}\upi, \tilde{z}\upi; \Theta) \right) \\
+			&= \nabla_{\mu_\ell}\ \sum_{i=1}^n w\upi_\ell \log \left(p(x\upi, z\upi; \Theta) \right) + \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell} \log \left(p(\tilde{x}\upi, \tilde{z}\upi; \Theta) \right) \\
+			&= \nabla_{\mu_\ell}\ \sum_{i=1}^n w\upi_\ell \log \left(p(x\upi | z\upi; \Theta) p(z\upi; \Theta) \right) + \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell} \log \left(p(\tilde{x}\upi | \tilde{z}\upi; \Theta) p(\tilde{z}\upi; \Theta) \right) \\
+			&= \nabla_{\mu_\ell}\ \sum_{i=1}^n w\upi_\ell \left \{
+			\log \left(
+			p(x\upi|z\upi; \Theta)
+			\right )
+			\right\} + \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell} \log \left(p(\tilde{x}\upi | \tilde{z}\upi; \Theta) \right) \\
+			&= \nabla_{\mu_\ell}\ \sum_{i=1}^n w\upi_\ell \left \{- \frac{1}{2} (x\upi - \mu_\ell)^T \Sigma^{-1}_\ell (x\upi - \mu_\ell) \right \} \\
+			&+ \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell} \left \{
+			-\frac{1}{2} (\tilde{x}\upi - \mu_\ell)^T \Sigma^{-1}_\ell (\tilde{x}\upi - \mu_\ell)
+			\right \} \\
+			&= \sum_{i=1}^n w\upi_\ell \left \{
+			x^{(i)T} \Sigma^{-1}_\ell - \mu_\ell^T \Sigma^{-1}_\ell
+			\right\} + \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell} \left \{
+			\tilde{x}^{(i)T} \Sigma^{-1}_\ell - \mu_\ell^T \Sigma^{-1}_\ell
+			\right\} \\
+			&= 0
+		\end{align}
+		By right multiplying $\Sigma_\ell^{-1}$,
+		\begin{align}
+			\sum_{i=1}^n w\upi_\ell \left \{
+			x\upi - \mu_\ell
+			\right\} + \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell} \left \{
+			\tilde{x}\upi - \mu_\ell
+			\right\} &= 0 \\
+			\implies \mu_\ell = \frac{\sum_{i=1}^n w_\ell\upi x\upi + \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell} \tilde{x}\upi}{\sum_{i=1}^n w_\ell\upi + \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell}}
+		\end{align}
+	\end{proof}
+	\subsection{Choosing $\Sigma_\ell$}
+	\begin{proof}
+		Let $S_\ell := \Sigma_\ell^{-1}$. From lecture we know that the first order condition of optimizing $\Sigma_\ell$ is the same as finding the first order condition for $S_\ell$.
+		\begin{align}
+			\nabla_{S_\ell}\ \ell_{\tx{semi-sup}}(\Theta) &= \nabla_{S_\ell}\ \sum_{i=1}^n \sum_{j=1}^k w\upi_j \log \left( \frac{p(x\upi, z\upi; \Theta)}{w\upi_j} \right) + \alpha \sum_{i=1}^{\tilde{n}} \log \left(p(\tilde{x}\upi, \tilde{z}\upi; \Theta)
+			\right) \\
+			&= \nabla_{S_\ell}\ \sum_{i=1}^n w\upi_\ell \log \left( \frac{p(x\upi, z\upi; \Theta)}{w\upi_\ell} \right) + \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell} \log \left(p(\tilde{x}\upi, \tilde{z}\upi; \Theta) \right) \\
+			&= \nabla_{S_\ell} \sum_{i=1}^n w_\ell\upi \left(
+			\log(|\Sigma_\ell|^{-1}) - \frac{1}{2} (x\upi - \mu_\ell)^T S_\ell (x\upi - \mu_\ell) \right) \\
+			&+ \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell} \left (
+				\log(|\Sigma_\ell|^{-1}) - \frac{1}{2} (\tilde{x}\upi - \mu_\ell)^T S_\ell (\tilde{x}\upi - \mu_\ell)
+			\right) \\
+			&= \nabla_{S_\ell} \sum_{i=1}^n w_\ell\upi \left(
+			\log(|S_\ell|) - \frac{1}{2} (x\upi - \mu_\ell)^T S_\ell (x\upi - \mu_\ell) \right) \\
+			&+ \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell} \left (
+				\log(|S_\ell|) - \frac{1}{2} (\tilde{x}\upi - \mu_\ell)^T S_\ell (\tilde{x}\upi - \mu_\ell)
+			\right) \\
+			&= \sum_{i=1}^n w_\ell\upi S_\ell^{-T} - w_\ell\upi (x\upi - \mu_\ell) (x\upi - \mu_\ell)^T + \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell} \left(
+			S_\ell^{-T} - (\tilde{x}\upi - u_\ell) (\tilde{x}\upi - u_\ell)^T
+			\right) \\
+			&= 0
+		\end{align}
+		Since $\Sigma_\ell$ is symmetric, so $S^{-T}_\ell = \Sigma_\ell$. Above first order condition implies
+		\begin{align}
+			\Sigma_\ell \left (\sum_{i=1}^n w_\ell\upi + \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell} \right) = \sum_{i=1}^n w_\ell\upi (x\upi - \mu_\ell) (x\upi - \mu_\ell)^T + \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell} (\tilde{x}\upi - u_\ell) (\tilde{x}\upi - u_\ell)^T \\
+			\implies \Sigma_\ell = \frac{\sum_{i=1}^n w_\ell\upi (x\upi - \mu_\ell) (x\upi - \mu_\ell)^T + \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell} (\tilde{x}\upi - u_\ell) (\tilde{x}\upi - u_\ell)^T}{\sum_{i=1}^n w_\ell\upi + \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell}}
+		\end{align}
+	\end{proof}
+	\subsection{Choosing $\phi_\ell$}
+	\begin{proof}
+		\begin{align}
+		\nabla_{\phi_\ell} \ell_{\tx{semi-sup}}(\Theta) &= \nabla_{\phi_\ell} \sum_{i=1}^n \sum_{\ell=1}^k w_\ell\upi \log \left(
+		\frac{p(x\upi|z\upi=\ell; \Theta)p(z\upi=\ell; \Theta)}{p(x\upi|z\upi=\ell; \Theta)}
+		\right)
+		+ \alpha \sum_{i=1}^{\tilde{n}} \log \left(p(\tilde{x}\upi| \tilde{z}\upi; \Theta) p(\tilde{z}; \Theta) \right) \\
+		&= \nabla_{\phi_\ell} \sum_{i=1}^n \sum_{\ell=1}^k w_\ell\upi \log \left( p(z\upi = \ell; \Theta) \right)
+		+ \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell}\log (\phi_\ell) \\
+		&= \nabla_{\phi_\ell} \sum_{i=1}^n \sum_{\ell=1}^k w_\ell\upi \log (\phi_\ell)
+		+ \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell}\log (\phi_\ell) \\
+		&= \nabla_{\phi_\ell} \sum_{i=1}^n w_\ell\upi \log (\phi_\ell)
+		+ \alpha \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = \ell}\log (\phi_\ell)
+		\end{align}
+		Using the constraint that $\sum_{\ell=1}^k \phi_\ell = 1$, the Lagrangian can be constructed as
+		\begin{align}
+			\mc{L}(\cdot) &= \ell_{\tx{semi-sup}}(\phi, \cdot) + \lambda \left(1 - \sum_{\ell=1}^k \phi_\ell \right)
+		\end{align}
+		Solving the stationary point for $\mc{L}(\cdot)$ gives
+		\begin{align}
+			\pd{\mc{L}(\phi_\ell, \cdot)}{\phi_\ell} &= \nabla_{\phi_\ell} \ell_{\tx{semi-sup}} - \lambda \\
+			&= \frac{1}{\phi_\ell} \left (
+			\sum_{i=1}^n w_\ell\upi + \alpha \sum_{i=1}^{\tilde{n}}
+			\id{\tilde{z}\upi = \ell} \right) - \lambda = 0\\
+			& \implies \frac{1}{\lambda} \left (
+			\sum_{i=1}^n w_\ell\upi + \alpha \sum_{i=1}^{\tilde{n}}
+			\id{\tilde{z}\upi = \ell} \right) = \phi_\ell
+		\end{align}
+		Then, $\sum_{\ell=1}^k \phi_\ell = 1$ implies
+		\begin{align}
+			\sum_{\ell=1}^k \frac{1}{\lambda} \left (
+			\sum_{i=1}^n w_\ell\upi + \alpha \sum_{i=1}^{\tilde{n}}
+			\id{\tilde{z}\upi = \ell} \right) &= 1 \\
+			\implies \sum_{\ell=1}^k \left (
+			\sum_{i=1}^n w_\ell\upi + \alpha \sum_{i=1}^{\tilde{n}}
+			\id{\tilde{z}\upi = \ell} \right) &= \lambda
+		\end{align}
+		Therefore, 
+		\begin{align}
+			\phi_\ell &= \frac{
+			\sum_{i=1}^n w_\ell\upi + \alpha \sum_{i=1}^{\tilde{n}}
+			\id{\tilde{z}\upi = \ell}
+			}{
+			\sum_{j=1}^k \left (
+			\sum_{i=1}^n w_j\upi + \alpha \sum_{i=1}^{\tilde{n}}
+			\id{\tilde{z}\upi = j} \right)
+			} \\
+			&= \frac{
+			\sum_{i=1}^n w_\ell\upi + \alpha \sum_{i=1}^{\tilde{n}}
+			\id{\tilde{z}\upi = \ell}
+			}{
+			\sum_{j=1}^k \sum_{i=1}^n w\upi_j
+			+ \alpha \sum_{j=1}^k \sum_{i=1}^{\tilde{n}} \id{\tilde{z}\upi = j}
+			} \\
+			&= \frac{
+			\sum_{i=1}^n w_\ell\upi + \alpha \sum_{i=1}^{\tilde{n}}
+			\id{\tilde{z}\upi = \ell}
+			}{
+			\sum_{i=1}^n \sum_{j=1}^k w\upi_j
+			+ \alpha \sum_{i=1}^{\tilde{n}} \sum_{j=1}^k \id{\tilde{z}\upi = j}
+			} \\
+			&= \frac{
+			\sum_{i=1}^n w_\ell\upi + \alpha \sum_{i=1}^{\tilde{n}}
+			\id{\tilde{z}\upi = \ell}
+			}{
+			n + \alpha \tilde{n}
+			}
+		\end{align}
+	\end{proof}
+	\newpage
+	\subsection{(d)}
+	\subsection{(e)}
+	\subsection{(f)}
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

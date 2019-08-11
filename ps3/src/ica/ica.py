@@ -44,6 +44,7 @@ def unmix(X, W):
     S = np.zeros(X.shape)
 
     # *** START CODE HERE ***
+    S = np.matmul(X, W)
     # *** END CODE HERE ***
 
     return S

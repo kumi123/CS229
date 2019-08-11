@@ -44,9 +44,12 @@ def unmix(X, W):
     S = np.zeros(X.shape)
 
     # *** START CODE HERE ***
-    S = np.matmul(X, W)
+    n, d = X.shape
+    for i in range(n):
+        _xi = X[i, :].reshape(d, 1)
+        _si = np.matmul(W, _xi)
+        S[i, :] = _si.reshape(-1,)
     # *** END CODE HERE ***
-
     return S
 
 

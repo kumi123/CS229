@@ -100,6 +100,7 @@ def run_em(x, w, phi, mu, sigma):
         return np.float64(f * ker)
     # Gaussian distributions for each category
     while it < max_iter and (prev_ll is None or np.abs(ll - prev_ll) >= eps):
+        it += 1
         # pass  # Just a placeholder for the starter code
         # *** START CODE HERE
         prev_ll = ll

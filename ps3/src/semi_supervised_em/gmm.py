@@ -192,6 +192,9 @@ def run_em(x, w, phi, mu, sigma):
         # if prev_ll is not None:
         #     assert ll > prev_ll, "Log-likelihood should increase."
         ll_records.append(ll)
+        if prev_ll is not None:
+            assert ll - prev_ll > 1e-10
+            print("Checked!")
         print("Iteration: {}, {}".format(it, ll))
         # *** END CODE HERE ***
     # plt.plot(ll_records)
@@ -246,13 +249,13 @@ def run_semi_supervised_em(x, x_tilde, z_tilde, w, phi, mu, sigma):
         # *** End ***
 
         for i in range(n):
-            den = 0
+            denom = 0
             for j in range(K):
                 num = multivariate_normal.pdf(
                     x[i, :], mu[j], sigma[j]) * phi[j]
-                den += num
+                denom += num
                 w[i, j] = num
-            w[i, :] /= den
+            w[i, :] /= denom
             assert np.abs(w[i, :].sum() - 1) < 1e-4
 
         # (2) M-step: Update the model parameters phi, mu, and sigma
@@ -349,6 +352,9 @@ def run_semi_supervised_em(x, x_tilde, z_tilde, w, phi, mu, sigma):
                 multivariate_normal.pdf(x_tilde[i, :], mu[sup_z], sigma[sup_z]) * phi[sup_z]
             )
         ll = ll_unsup + alpha * ll_sup
+        if prev_ll is not None:
+            assert ll - prev_ll > 1e-10
+            print("Checked!")
         # if prev_ll is not None:
         #     assert ll > prev_ll, "Log-likelihood should increase."
         print("Iteration: {}, {}".format(it, ll))

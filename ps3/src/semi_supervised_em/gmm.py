@@ -25,10 +25,12 @@ def main(is_semi_supervised, trial_num):
     x = x_all[~labeled_idxs, :]        # Unlabeled examples
 
     # *** START CODE HERE ***
-    if is_semi_supervised:
-        considered = x_all
-    else:
-        considered = x
+    # if is_semi_supervised:
+    #     considered = x_all
+    # else:
+    #     considered = x
+    # n = considered.shape[0]
+    considered = x
     n = considered.shape[0]
     # (1) Initialize mu and sigma by splitting the m data points uniformly at random
     # into K groups, then calculating the sample mean and covariance for each group

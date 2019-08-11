@@ -150,7 +150,7 @@ def run_em(x, w, phi, mu, sigma):
             ll_total += np.log(instance_ll)
         ll = ll_total
         ll_records.append(ll)
-        print(ll)
+        print("Iteration: {}, {}".format(it, ll))
         # *** END CODE HERE ***
     plt.plot(ll_records)
     # plt.show()

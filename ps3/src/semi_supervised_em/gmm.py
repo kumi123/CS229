@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import math
+from scipy.stats import multivariate_normal
 
 PLOT_COLORS = ['red', 'green', 'blue', 'orange']  # Colors for your plots
 K = 4           # Number of Gaussians in the mixture model
@@ -29,17 +30,17 @@ def main(is_semi_supervised, trial_num):
     #     considered = x_all
     # else:
     #     considered = x
-    # n = considered.shape[0]
     considered = x
     n = considered.shape[0]
     # (1) Initialize mu and sigma by splitting the m data points uniformly at random
     # into K groups, then calculating the sample mean and covariance for each group
-    mu = np.zeros([K, considered.shape[1]])  # (4, 2)
+    mu = []  # [2,] * 4
     sigma = []  # [2, 2] * 4
-    random_assignments = np.random.randint(0, K, considered.shape[0])
+    random_assignments = np.random.randint(0, K, n)
     for i in range(K):
         in_cluster = considered[random_assignments == i]
-        mu[i, :] = np.mean(in_cluster, axis=0)
+        # mu[i] = np.mean(in_cluster, axis=0)
+        mu.append(np.mean(in_cluster, axis=0))
         sigma.append(np.cov(in_cluster, rowvar=False))
     # (2) Initialize phi to place equal probability on each Gaussian
     # phi should be a numpy array of shape (K,)
@@ -61,6 +62,21 @@ def main(is_semi_supervised, trial_num):
             z_pred[i] = np.argmax(w[i])
 
     plot_gmm_preds(x, z_pred, is_semi_supervised, plot_id=trial_num)
+
+
+# def gaussian(xvar, mu, sigma) -> float:
+#     dist = multivariate_normal(mean=mu, cov=sigma)
+#     return dist.pdf(xvar)
+
+def gaussian(xvar, mu, sigma) -> float:
+        d = sigma.shape[0]
+        # Multivariate Gaussian
+        f = 1 / (
+            ((2 * np.pi) ** (d / 2)) * (np.linalg.det(sigma) ** (1 / 2))
+        )
+        xvar = xvar.reshape(-1, 1)
+        ker = np.squeeze(np.exp(- 0.5 * np.matmul(np.matmul(xvar.T, np.linalg.inv(sigma)), xvar)))
+        return float(f * ker)
 
 
 def run_em(x, w, phi, mu, sigma):
@@ -91,70 +107,94 @@ def run_em(x, w, phi, mu, sigma):
     ll_records = []  # To record the history of log-likelihood.
     n, d = x.shape
 
-    def gaussian(xvar, mu, sigma) -> float:
-        d = sigma.shape[0]
-        # Multivariate Gaussian
-        f = 1 / (
-            (2 * np.pi) ** (d / 2) * np.linalg.det(sigma) ** (1 / 2)
-        )
-        xvar = xvar.reshape(-1, 1)
-        ker = np.squeeze(np.exp(- 0.5 * np.matmul(np.matmul(xvar.T, np.linalg.inv(sigma)), xvar)))
-        return np.float64(f * ker)
     # Gaussian distributions for each category
     while it < max_iter and (prev_ll is None or np.abs(ll - prev_ll) >= eps):
         it += 1
         # pass  # Just a placeholder for the starter code
         # *** START CODE HERE
-        prev_ll = ll
         # (1) E-step: Update your estimates in w
         # Use Bayes Rule.
         # w[i, j] = p(z=j|xi)
+        # for i in range(n):
+        #     denominator = 0.0
+        #     for j in range(K):
+        #         # p(xi|zi=j) * p(zi=j)
+        #         posterior = gaussian(x[i], mu[j], sigma[j]) * phi[j]
+        #         denominator += posterior
+        #     for j in range(K):
+        #         w[i, j] = gaussian(x[i], mu[j], sigma[j]) * phi[j] / denominator
+        #     # total = np.array(total)
+        #     # w[i, :] = total / total.sum()
         for i in range(n):
-            total = list()
+            denom = 0
             for j in range(K):
-                # p(xi|zi=j) * p(zi=j)
-                prob = gaussian(x[i], mu[j], sigma[j]) * phi[j]
-                total.append(prob)
-            total = np.array(total)
-            w[i, :] = total / total.sum()
-            # if total.sum() > 0:
-            #     w[i, :] = total / total.sum()
-            # elif total.sum() == 0:
-            #     w[i, :] = 1 / K
+                num = multivariate_normal.pdf(x[i, :], mu[j], sigma[j]) * phi[j]
+                denom += num
+                w[i, j] = num
+            w[i, :] /= denom
         # (2) M-step: Update the model parameters phi, mu, and sigma
-        phi = w.sum(axis=0) / n
-        # mu = (w.T @ x) / w.sum(axis=0).reshape(-1, 1)  # An vectorized implementation.
         for j in range(K):
-            # mu[j, :] = np.matmul((w[:, 1].reshape(1, -1)), x).reshape(-1) / mu[j, :].sum()
-            total_vec = np.zeros(d)
-            denominator = 0.0
+            const = w[:, j].sum()
+            phi[j] = 1 / n * const
+            mu_j = np.zeros(d)
+            sigma_j = np.zeros((d, d))
             for i in range(n):
-                total_vec += w[i, j] * x[i]
-                denominator += w[i, j]
-            mu[j, :] = total_vec / denominator
-            sigma_placeholder = np.zeros_like(sigma[j])
-            for i in range(n):
-                xi = x[i].reshape(d, 1)
-                partial = w[i, j] * np.matmul(xi, xi.T)
-                sigma_placeholder += partial
-            sigma[j] = sigma_placeholder / denominator
+                mu_j += (x[i, :] * w[i, j])
+                temp = (x[i, :] - mu[j]).reshape(-1, 1)
+                sigma_j += w[i, j] * (temp) @ (temp).T
+            mu[j] = mu_j / const
+            sigma[j] = sigma_j / const
+        # *** Previous M-Step ***
+        # new_phi = w.sum(axis=0) / n
+        # # new_phi = w.sum(axis=0) / w.sum()
+        # # new_mu = (w.T @ x) / w.sum(axis=0).reshape(-1, 1)  # An vectorized implementation.
+        # new_mu = list()
+        # new_sigma = list()
+        # for j in range(K):
+        #     # mu[j, :] = np.matmul((w[:, 1].reshape(1, -1)), x).reshape(-1) / mu[j, :].sum()
+        #     total_vec = np.zeros(d)
+        #     denominator = 0.0
+        #     for i in range(n):
+        #         total_vec += w[i, j] * x[i]
+        #         denominator += w[i, j]
+        #     new_mu.append(total_vec / denominator)
+        #     sigma_placeholder = np.zeros_like(sigma[j])
+        #     for i in range(n):
+        #         ci = (x[i] - mu[j]).reshape(-1, 1)
+        #         partial = w[i, j] * np.matmul(ci, ci.T)
+        #         sigma_placeholder += partial
+        #     new_sigma.append(sigma_placeholder / (denominator))
+        # # Assign new values
+        # phi[:] = new_phi
+        # for j in range(K):
+        #     mu[j] = new_mu[j]
+        #     sigma[j] = new_sigma[j]
+        # *** End ***
+
         # (3) Compute the log-likelihood of the data to check for convergence.
         # By log-likelihood, we mean `ll = sum_x[log(sum_z[p(x|z) * p(z)])]`.
         # We define convergence by the first iteration where abs(ll - prev_ll) < eps.
         # Hint: For debugging, recall part (a). We showed that ll should be monotonically increasing.
-        # ll = np.sum([
-        #     np.log(np.sum([var.pdf(xi) * phi[j] for j, var in enumerate(kernels)])) for xi in x])
-        ll_total = 0.0
+        prev_ll = ll
+        # ll_total = 0.0
+        # for i in range(n):
+        #     instance_ll = 0.0
+        #     for j in range(K):
+        #         instance_ll += gaussian(x[i], mu[j], sigma[j]) * phi[j]
+        #     ll_total += np.log(instance_ll)
+        # ll = ll_total
+        ll = 0
         for i in range(n):
-            instance_ll = 0.0
+            temp = 0
             for j in range(K):
-                instance_ll += gaussian(x[i], mu[j], sigma[j]) * phi[j]
-            ll_total += np.log(instance_ll)
-        ll = ll_total
+                temp += multivariate_normal.pdf(x[i, :], mu[j], sigma[j]) * phi[j]
+            ll += np.log(temp)
+        # if prev_ll is not None:
+        #     assert ll > prev_ll, "Log-likelihood should increase."
         ll_records.append(ll)
         print("Iteration: {}, {}".format(it, ll))
         # *** END CODE HERE ***
-    plt.plot(ll_records)
+    # plt.plot(ll_records)
     # plt.show()
     return w
 
@@ -174,7 +214,7 @@ def run_semi_supervised_em(x, x_tilde, z_tilde, w, phi, mu, sigma):
         sigma: Initial cluster covariances, list of k arrays of shape (d, d).
 
     Returns:
-        Updated weight matrix of shape (n, d) resulting from semi-supervised EM algorithm.
+        Updated weight matrix of shape (n, k) resulting from semi-supervised EM algorithm.
         More specifically, w[i, j] should contain the probability of
         example x^(i) belonging to the j-th Gaussian in the mixture.
     """
@@ -182,17 +222,136 @@ def run_semi_supervised_em(x, x_tilde, z_tilde, w, phi, mu, sigma):
     alpha = 20.  # Weight for the labeled examples
     eps = 1e-3   # Convergence threshold
     max_iter = 1000
-
+    # Load necessary variables
+    n, d = x.shape
+    n_tilde = z_tilde.shape[0]
+    k = w.shape[1]
     # Stop when the absolute change in log-likelihood is < eps
     # See below for explanation of the convergence criterion
     it = 0
     ll = prev_ll = None
+
     while it < max_iter and (prev_ll is None or np.abs(ll - prev_ll) >= eps):
-        pass  # Just a placeholder for the starter code
         # *** START CODE HERE ***
+        it += 1
         # (1) E-step: Update your estimates in w
+        # Only update for unlabelled observations.
+        # *** Loop Approach ***
+        # for i in range(n):
+        #     denominator = 0.0
+        #     for j in range(K):
+        #         denominator += gaussian(x[i], mu[j], sigma[j]) * phi[j]
+        #     for j in range(K):
+        #         w[i, j] = gaussian(x[i], mu[j], sigma[j]) * phi[j] / denominator
+        # *** End ***
+
+        for i in range(n):
+            den = 0
+            for j in range(K):
+                num = multivariate_normal.pdf(
+                    x[i, :], mu[j], sigma[j]) * phi[j]
+                den += num
+                w[i, j] = num
+            w[i, :] /= den
+            assert np.abs(w[i, :].sum() - 1) < 1e-4
+
         # (2) M-step: Update the model parameters phi, mu, and sigma
+        # Update phi
+        new_phi = np.zeros_like(phi)
+        for j in range(K):
+            phi_j = 0.0
+            for i in range(n):
+                phi_j += w[i, j]
+            for i in range(n_tilde):
+                if z_tilde[i] == j:
+                    phi_j += alpha
+            new_phi[j] = phi_j / (n + alpha * n_tilde)
+        # phi[j] = (w.sum(axis=0)[j] + alpha * np.sum(z_tilde == j)) / (n + alpha * n_tilde)
+        # Update mu
+        new_mu = list()
+        for j in range(K):
+            muj = np.zeros(d)
+            for i in range(n):
+                muj += w[i, j] * x[i]
+            for i in range(n_tilde):
+                if z_tilde[i] == j:
+                    muj += alpha * x_tilde[i]
+            denominator = 0.0
+            for i in range(n):
+                denominator += w[i, j]
+            for i in range(n_tilde):
+                if z_tilde[i] == j:
+                    denominator += alpha
+            # muj = muj / (w.sum(axis=0)[j] + alpha * np.sum(z_tilde == j))
+            new_mu.append(muj / denominator)
+        # update sigma
+
+        for j in range(K):
+            const = w[:, j].sum() + alpha * np.sum(z_tilde == j)
+            phi[j] = 1 / (n + alpha * n_tilde) * const
+            mu_j = np.zeros(d)
+            sigma_j = np.zeros((d, d))
+            for i in range(n):
+                mu_j += (x[i, :] * w[i, j])
+                temp = (x[i, :] - mu[j]).reshape(-1, 1)
+                sigma_j += w[i, j] * (temp) @ (temp).T
+            for i in range(n_tilde):
+                mu_j += alpha * (x_tilde[i, :] * int(z_tilde[i] == j))
+                temp = (x_tilde[i, :] - mu[j]).reshape(-1, 1)
+                sigma_j += alpha * int(z_tilde[i] == j) * (temp) @ (temp).T
+            mu[j] = mu_j / const
+            sigma[j] = sigma_j / const
+
+
+        # new_sigma = list()
+        # for j in range(K):
+        #     # denominator = w.sum(axis=0)[j] + alpha * np.sum(z_tilde == j)
+        #     # Compute normalizer
+        #     denominator = 0.0
+        #     for i in range(n):
+        #         denominator += w[i, j]
+        #     for i in range(n_tilde):
+        #         # if z_tilde[i] == j:
+        #         #     denominator += alpha
+        #         denominator += int(z_tilde[i] == j)
+        #     sigma_j = np.zeros([d, d])
+        #     for i in range(n):
+        #         current = (x[i] - mu[j]).reshape(-1, 1)
+        #         sigma_j += w[i, j] * np.matmul(current, current.T)
+        #     for i in range(n_tilde):
+        #         if z_tilde[i] == j:
+        #             current = (x_tilde[i] - mu[j]).reshape(-1, 1)
+        #             sigma_j += alpha * np.matmul(current, current.T)
+        #     new_sigma.append(sigma_j / denominator)
+        # # assign new vars.
+        # for j in range(K):
+        #     phi[j] = new_phi[j]
+        #     mu[j] = new_mu[j]
+        #     sigma[j] = new_sigma[j]
         # (3) Compute the log-likelihood of the data to check for convergence.
+        prev_ll = ll
+        # ll_unsup = 0.0
+        # for i in range(n):
+        #     counter = 0.0
+        #     for j in range(K):
+        #         counter += gaussian(x[i], mu[j], sigma[j]) * phi[j]
+        #     ll_unsup += np.log(counter)
+        ll_unsup = 0
+        for i in range(n):
+            temp = 0
+            for j in range(K):
+                temp += multivariate_normal.pdf(x[i, :], mu[j], sigma[j]) * phi[j]
+            ll_unsup += np.log(temp)
+        ll_sup = 0
+        for i in range(n_tilde):
+            sup_z = int(z_tilde[i])
+            ll_sup += np.log(
+                multivariate_normal.pdf(x_tilde[i, :], mu[sup_z], sigma[sup_z]) * phi[sup_z]
+            )
+        ll = ll_unsup + alpha * ll_sup
+        # if prev_ll is not None:
+        #     assert ll > prev_ll, "Log-likelihood should increase."
+        print("Iteration: {}, {}".format(it, ll))
         # Hint: Make sure to include alpha in your calculation of ll.
         # Hint: For debugging, recall part (a). We showed that ll should be monotonically increasing.
         # *** END CODE HERE ***
@@ -264,7 +423,7 @@ if __name__ == '__main__':
     # affect the final predictions with and without supervision
     for t in range(NUM_TRIALS):
         main(is_semi_supervised=False, trial_num=t)
-
+        main(is_semi_supervised=True, trial_num=t)
         # *** START CODE HERE ***
         # Once you've implemented the semi-supervised version,
         # uncomment the following line.

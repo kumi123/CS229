@@ -2,6 +2,7 @@ import numpy as np
 import scipy.io.wavfile
 import os
 
+
 def update_W(W, x, learning_rate):
     """
     Perform a gradient ascent update on W using data element x and the provided learning rate.
@@ -16,10 +17,15 @@ def update_W(W, x, learning_rate):
     Returns:
         The updated W
     """
-
+    d = W.shape[0]
     # *** START CODE HERE ***
+    sign_mat = np.array([
+        np.sign(np.dot(W[j, :], x))
+        for j in range(d)
+    ]).reshape(d, 1)
+    grad = np.linalg.inv(W).T - np.matmul(sign_mat, x.reshape(1, d))
+    updated_W = W + learning_rate * grad
     # *** END CODE HERE ***
-
     return updated_W
 
 

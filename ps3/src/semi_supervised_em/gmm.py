@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import math
 
 PLOT_COLORS = ['red', 'green', 'blue', 'orange']  # Colors for your plots
 K = 4           # Number of Gaussians in the mixture model
@@ -85,18 +86,73 @@ def run_em(x, w, phi, mu, sigma):
     # See below for explanation of the convergence criterion
     it = 0
     ll = prev_ll = None
+    ll_records = []  # To record the history of log-likelihood.
+    n, d = x.shape
+
+    def gaussian(xvar, mu, sigma) -> float:
+        d = sigma.shape[0]
+        # Multivariate Gaussian
+        f = 1 / (
+            (2 * np.pi) ** (d / 2) * np.linalg.det(sigma) ** (1 / 2)
+        )
+        xvar = xvar.reshape(-1, 1)
+        ker = np.squeeze(np.exp(- 0.5 * np.matmul(np.matmul(xvar.T, np.linalg.inv(sigma)), xvar)))
+        return np.float64(f * ker)
+    # Gaussian distributions for each category
     while it < max_iter and (prev_ll is None or np.abs(ll - prev_ll) >= eps):
-        pass  # Just a placeholder for the starter code
+        # pass  # Just a placeholder for the starter code
         # *** START CODE HERE
+        prev_ll = ll
         # (1) E-step: Update your estimates in w
-        w = 
+        # Use Bayes Rule.
+        # w[i, j] = p(z=j|xi)
+        for i in range(n):
+            total = list()
+            for j in range(K):
+                # p(xi|zi=j) * p(zi=j)
+                prob = gaussian(x[i], mu[j], sigma[j]) * phi[j]
+                total.append(prob)
+            total = np.array(total)
+            w[i, :] = total / total.sum()
+            # if total.sum() > 0:
+            #     w[i, :] = total / total.sum()
+            # elif total.sum() == 0:
+            #     w[i, :] = 1 / K
         # (2) M-step: Update the model parameters phi, mu, and sigma
+        phi = w.sum(axis=0) / n
+        # mu = (w.T @ x) / w.sum(axis=0).reshape(-1, 1)  # An vectorized implementation.
+        for j in range(K):
+            # mu[j, :] = np.matmul((w[:, 1].reshape(1, -1)), x).reshape(-1) / mu[j, :].sum()
+            total_vec = np.zeros(d)
+            denominator = 0.0
+            for i in range(n):
+                total_vec += w[i, j] * x[i]
+                denominator += w[i, j]
+            mu[j, :] = total_vec / denominator
+            sigma_placeholder = np.zeros_like(sigma[j])
+            for i in range(n):
+                xi = x[i].reshape(d, 1)
+                partial = w[i, j] * np.matmul(xi, xi.T)
+                sigma_placeholder += partial
+            sigma[j] = sigma_placeholder / denominator
         # (3) Compute the log-likelihood of the data to check for convergence.
         # By log-likelihood, we mean `ll = sum_x[log(sum_z[p(x|z) * p(z)])]`.
         # We define convergence by the first iteration where abs(ll - prev_ll) < eps.
         # Hint: For debugging, recall part (a). We showed that ll should be monotonically increasing.
+        # ll = np.sum([
+        #     np.log(np.sum([var.pdf(xi) * phi[j] for j, var in enumerate(kernels)])) for xi in x])
+        ll_total = 0.0
+        for i in range(n):
+            instance_ll = 0.0
+            for j in range(K):
+                instance_ll += gaussian(x[i], mu[j], sigma[j]) * phi[j]
+            ll_total += np.log(instance_ll)
+        ll = ll_total
+        ll_records.append(ll)
+        print(ll)
         # *** END CODE HERE ***
-
+    plt.plot(ll_records)
+    # plt.show()
     return w
 
 

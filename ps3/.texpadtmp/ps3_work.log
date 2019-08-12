@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  10 AUG 2019 22:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  11 AUG 2019 23:58
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -823,123 +823,182 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 31.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (16.03947pt too wide) in paragraph at lines 50--52
+{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] <src/cartpole/control.pdf, id=105, 462.52798pt x 346.89601pt>
+File: src/cartpole/control.pdf Graphic file (type pdf)
+ <use src/cartpole/control.pdf>
+Package pdftex.def Info: src/cartpole/control.pdf used on input line 37.
+(pdftex.def)             Requested size: 469.75502pt x 352.33656pt.
+ [2 <./src/cartpole/control.pdf>] [3] [4] [5]
+LaTeX Font Info:    Try loading font information for U+dsrom on input line 121.
+ (/usr/local/texlive/2016/texmf-dist/tex/latex/doublestroke/Udsrom.fd
+File: Udsrom.fd 1995/08/01 v0.1 Double stroke roman font definitions
+) [6] <src/k_means/orig_large.png, id=207, 310.761pt x 314.3745pt>
+File: src/k_means/orig_large.png Graphic file (type png)
+ <use src/k_means/orig_large.png>
+Package pdftex.def Info: src/k_means/orig_large.png used on input line 137.
+(pdftex.def)             Requested size: 469.75502pt x 475.23024pt.
+ <src/k_means/orig_small.png, id=209, 307.1475pt x 314.3745pt>
+File: src/k_means/orig_small.png Graphic file (type png)
+ <use src/k_means/orig_small.png>
+Package pdftex.def Info: src/k_means/orig_small.png used on input line 143.
+(pdftex.def)             Requested size: 469.75502pt x 480.83789pt.
+ [7 <./src/k_means/orig_large.png>] <src/k_means/updated_large.png, id=217, 310.761pt x 314.3745pt>
+File: src/k_means/updated_large.png Graphic file (type png)
+ <use src/k_means/updated_large.png>
+Package pdftex.def Info: src/k_means/updated_large.png used on input line 149.
+(pdftex.def)             Requested size: 469.75502pt x 475.23024pt.
+ [8 <./src/k_means/orig_small.png>] [9 <./src/k_means/updated_large.png>] [10] [11]
+Overfull \hbox (16.03947pt too wide) in paragraph at lines 178--180
  []\OT1/cmr/bx/n/10.95 Answer[] $\OML/cmm/m/it/10.95 z[]$ \OT1/cmr/m/n/10.95 for all un-la-belled ex-am-ples should be es-ti-mated. Specif-i-cally, pos-te-rior $\OML/cmm/m/it/10.95 p\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 z[]\OMS/cmsy/m/n/10.95 j\OML/cmm/m/it/10.95 x[]\OT1/cmr/m/n/10.95 ; \OML/cmm/m/it/10.95 ^^V; \OT1/cmr/m/n/10.95 ^^F\OML/cmm/m/it/10.95 ; ^^^\OT1/cmr/m/n/10.95 )$
  []
 
-[2]
+[12]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 69.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\mu' on input line 69.
+(hyperref)                removing `math shift' on input line 198.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 69.
+(hyperref)                removing `\mu' on input line 198.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\ell' on input line 69.
+(hyperref)                removing `subscript' on input line 198.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `superscript' on input line 69.
+(hyperref)                removing `\ell' on input line 198.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 69.
+(hyperref)                removing `superscript' on input line 198.
 
-LaTeX Font Info:    Try loading font information for U+dsrom on input line 93.
-(/usr/local/texlive/2016/texmf-dist/tex/latex/doublestroke/Udsrom.fd
-File: Udsrom.fd 1995/08/01 v0.1 Double stroke roman font definitions
-)
-Overfull \hbox (46.6846pt too wide) in paragraph at lines 93--93
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 198.
+
+
+Overfull \hbox (46.6846pt too wide) in paragraph at lines 222--222
 [] 
  []
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 104.
+(hyperref)                removing `math shift' on input line 233.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\Sigma' on input line 104.
+(hyperref)                removing `\Sigma' on input line 233.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 104.
+(hyperref)                removing `subscript' on input line 233.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\ell' on input line 104.
+(hyperref)                removing `\ell' on input line 233.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 104.
+(hyperref)                removing `math shift' on input line 233.
 
 
-Overfull \hbox (57.77707pt too wide) in paragraph at lines 125--125
+Overfull \hbox (57.77707pt too wide) in paragraph at lines 254--254
 [] 
  []
 
-[3]
-Overfull \hbox (39.53975pt too wide) in paragraph at lines 130--130
+[13]
+Overfull \hbox (39.53975pt too wide) in paragraph at lines 259--259
 [] 
  []
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 132.
+(hyperref)                removing `math shift' on input line 261.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\phi' on input line 132.
+(hyperref)                removing `\phi' on input line 261.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 132.
+(hyperref)                removing `subscript' on input line 261.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\ell' on input line 132.
+(hyperref)                removing `\ell' on input line 261.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 132.
+(hyperref)                removing `math shift' on input line 261.
 
 
-Overfull \hbox (36.3294pt too wide) in paragraph at lines 145--145
+Overfull \hbox (36.3294pt too wide) in paragraph at lines 274--274
 [] 
  []
 
-[4] [5]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 201.
- [6]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 201.
+[14] [15] [16] <src/semi_supervised_em/pred_0.pdf, id=311, 867.24pt x 578.16pt>
+File: src/semi_supervised_em/pred_0.pdf Graphic file (type pdf)
+ <use src/semi_supervised_em/pred_0.pdf>
+Package pdftex.def Info: src/semi_supervised_em/pred_0.pdf used on input line 335.
+(pdftex.def)             Requested size: 469.75502pt x 313.17216pt.
+ <src/semi_supervised_em/pred_1.pdf, id=312, 867.24pt x 578.16pt>
+File: src/semi_supervised_em/pred_1.pdf Graphic file (type pdf)
+ <use src/semi_supervised_em/pred_1.pdf>
+Package pdftex.def Info: src/semi_supervised_em/pred_1.pdf used on input line 339.
+(pdftex.def)             Requested size: 469.75502pt x 313.17216pt.
+ [17 <./src/semi_supervised_em/pred_0.pdf>] <src/semi_supervised_em/pred_2.pdf, id=350, 867.24pt x 578.16pt>
+File: src/semi_supervised_em/pred_2.pdf Graphic file (type pdf)
+ <use src/semi_supervised_em/pred_2.pdf>
+Package pdftex.def Info: src/semi_supervised_em/pred_2.pdf used on input line 344.
+(pdftex.def)             Requested size: 469.75502pt x 313.17216pt.
+ [18 <./src/semi_supervised_em/pred_1.pdf> <./src/semi_supervised_em/pred_2.pdf
+
+pdfTeX warning: /usr/local/texlive/2016/bin/x86_64-darwin/pdflatex (file ./src/semi_supervised_em/pred_2.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+>] <src/semi_supervised_em/pred_ss_0.pdf, id=420, 867.24pt x 578.16pt>
+File: src/semi_supervised_em/pred_ss_0.pdf Graphic file (type pdf)
+ <use src/semi_supervised_em/pred_ss_0.pdf>
+Package pdftex.def Info: src/semi_supervised_em/pred_ss_0.pdf used on input line 351.
+(pdftex.def)             Requested size: 469.75502pt x 313.17216pt.
+ <src/semi_supervised_em/pred_ss_1.pdf, id=421, 867.24pt x 578.16pt>
+File: src/semi_supervised_em/pred_ss_1.pdf Graphic file (type pdf)
+ <use src/semi_supervised_em/pred_ss_1.pdf>
+Package pdftex.def Info: src/semi_supervised_em/pred_ss_1.pdf used on input line 355.
+(pdftex.def)             Requested size: 469.75502pt x 313.17216pt.
+ <src/semi_supervised_em/pred_ss_2.pdf, id=422, 867.24pt x 578.16pt>
+File: src/semi_supervised_em/pred_ss_2.pdf Graphic file (type pdf)
+ <use src/semi_supervised_em/pred_ss_2.pdf>
+Package pdftex.def Info: src/semi_supervised_em/pred_ss_2.pdf used on input line 359.
+(pdftex.def)             Requested size: 469.75502pt x 313.17216pt.
+ [19 <./src/semi_supervised_em/pred_ss_0.pdf>] [20 <./src/semi_supervised_em/pred_ss_1.pdf> <./src/semi_supervised_em/pred_ss_2.pdf
+
+pdfTeX warning: /usr/local/texlive/2016/bin/x86_64-darwin/pdflatex (file ./src/semi_supervised_em/pred_ss_2.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+>] [21] [22] [23] [24] [25]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 500.
+ [26]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 500.
  (/Users/tianyudu/Documents/UToronto/2019 Summer Exchange/Stanford Summer Session/CS229/Problem Sets/CS229/ps3/.texpadtmp/ps3_work.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 201.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 201.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 500.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 500.
 Package rerunfilecheck Info: File `ps3_work.out' has not changed.
 (rerunfilecheck)             Checksum: <no file>.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 201.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 500.
  ) 
 Here is how much of TeX's memory you used:
- 10708 strings out of 493014
- 155785 string characters out of 6133351
+ 10914 strings out of 493014
+ 159243 string characters out of 6133351
  296354 words of memory out of 5000000
- 13995 multiletter control sequences out of 15000+600000
- 13730 words of font info for 54 fonts, out of 8000000 for 9000
+ 14073 multiletter control sequences out of 15000+600000
+ 15539 words of font info for 62 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 44i,13n,68p,1024b,406s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/doublestroke/dsrom10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on "/Users/tianyudu/Documents/UToronto/2019 Summer Exchange/Stanford Summer Session/CS229/Problem Sets/CS229/ps3/.texpadtmp/ps3_work.pdf" (6 pages, 182353 bytes).
+ 44i,22n,77p,1024b,408s stack positions out of 5000i,500n,10000p,200000b,80000s
+pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist, replaced by a fixed one
+
+</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/doublestroke/dsrom10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on "/Users/tianyudu/Documents/UToronto/2019 Summer Exchange/Stanford Summer Session/CS229/Problem Sets/CS229/ps3/.texpadtmp/ps3_work.pdf" (26 pages, 1762476 bytes).
 PDF statistics:
- 197 PDF objects out of 1000 (max. 8388607)
- 169 compressed objects within 2 object streams
- 63 named destinations out of 1000 (max. 500000)
- 57 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 695 PDF objects out of 1000 (max. 8388607)
+ 441 compressed objects within 5 object streams
+ 173 named destinations out of 1000 (max. 500000)
+ 235 words of extra memory for PDF output out of 10000 (max. 10000000)
 

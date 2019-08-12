@@ -1,7 +1,23 @@
-\BOOKMARK [1][-]{section.1}{Problem 4: Semi-supervised EM}{}% 1
-\BOOKMARK [2][-]{subsection.1.1}{\(a\) Convergence}{section.1}% 2
-\BOOKMARK [2][-]{subsection.1.2}{\(b\) Semi-supervised E-step}{section.1}% 3
-\BOOKMARK [2][-]{subsection.1.3}{\(c\) Semi-supervised M-step}{section.1}% 4
-\BOOKMARK [3][-]{subsubsection.1.3.1}{Choosing \(t+1\)}{subsection.1.3}% 5
-\BOOKMARK [2][-]{subsection.1.4}{Choosing }{section.1}% 6
-\BOOKMARK [2][-]{subsection.1.5}{Choosing }{section.1}% 7
+\BOOKMARK [1][-]{section.1}{Problem 1: Reinforcement Learning: The inverted pendulum}{}% 1
+\BOOKMARK [1][-]{section.2}{Problem 2: KL Divergence and Maximum Likelihood}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{\(a\) Non-negativity}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{\(b\) Chain rule for KL divergence}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{\(c\) KL and maximum likelihood}{section.2}% 5
+\BOOKMARK [1][-]{section.3}{Problem 3: K-means for Compression}{}% 6
+\BOOKMARK [2][-]{subsection.3.1}{\(a\) K-Means Compression Implementation}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.2}{\(b\) Compression Factor}{section.3}% 8
+\BOOKMARK [1][-]{section.4}{Problem 4: Semi-supervised EM}{}% 9
+\BOOKMARK [2][-]{subsection.4.1}{\(a\) Convergence}{section.4}% 10
+\BOOKMARK [2][-]{subsection.4.2}{\(b\) Semi-supervised E-step}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.3}{\(c\) Semi-supervised M-step}{section.4}% 12
+\BOOKMARK [3][-]{subsubsection.4.3.1}{Choosing \(t+1\)}{subsection.4.3}% 13
+\BOOKMARK [3][-]{subsubsection.4.3.2}{Choosing }{subsection.4.3}% 14
+\BOOKMARK [3][-]{subsubsection.4.3.3}{Choosing }{subsection.4.3}% 15
+\BOOKMARK [2][-]{subsection.4.4}{\(d\) Classical \(Unsupervised\) EM Implememtation}{section.4}% 16
+\BOOKMARK [2][-]{subsection.4.5}{\(e\) Semi-supervised EM Implementation}{section.4}% 17
+\BOOKMARK [2][-]{subsection.4.6}{\(f\) Comparison}{section.4}% 18
+\BOOKMARK [1][-]{section.5}{PCA}{}% 19
+\BOOKMARK [1][-]{section.6}{Problem 6: Independent Components Analysis}{}% 20
+\BOOKMARK [2][-]{subsection.6.1}{\(a\) Gaussian source}{section.6}% 21
+\BOOKMARK [2][-]{subsection.6.2}{\(b\) Laplace Source}{section.6}% 22
+\BOOKMARK [2][-]{subsection.6.3}{\(c\) Cocktail Party Problem}{section.6}% 23

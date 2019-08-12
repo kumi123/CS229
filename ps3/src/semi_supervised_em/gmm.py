@@ -104,7 +104,6 @@ def run_em(x, w, phi, mu, sigma):
     # See below for explanation of the convergence criterion
     it = 0
     ll = prev_ll = None
-    ll_records = []  # To record the history of log-likelihood.
     n, d = x.shape
 
     # Gaussian distributions for each category
@@ -126,12 +125,13 @@ def run_em(x, w, phi, mu, sigma):
         #     # total = np.array(total)
         #     # w[i, :] = total / total.sum()
         for i in range(n):
-            denom = 0
+            denominator = 0
             for j in range(K):
-                num = multivariate_normal.pdf(x[i, :], mu[j], sigma[j]) * phi[j]
-                denom += num
-                w[i, j] = num
-            w[i, :] /= denom
+                numerator = multivariate_normal.pdf(
+                    x[i, :], mu[j], sigma[j]) * phi[j]
+                denominator += numerator
+                w[i, j] = numerator
+            w[i, :] /= denominator
         # (2) M-step: Update the model parameters phi, mu, and sigma
         for j in range(K):
             const = w[:, j].sum()
@@ -176,29 +176,17 @@ def run_em(x, w, phi, mu, sigma):
         # We define convergence by the first iteration where abs(ll - prev_ll) < eps.
         # Hint: For debugging, recall part (a). We showed that ll should be monotonically increasing.
         prev_ll = ll
-        # ll_total = 0.0
-        # for i in range(n):
-        #     instance_ll = 0.0
-        #     for j in range(K):
-        #         instance_ll += gaussian(x[i], mu[j], sigma[j]) * phi[j]
-        #     ll_total += np.log(instance_ll)
-        # ll = ll_total
         ll = 0
         for i in range(n):
             temp = 0
             for j in range(K):
                 temp += multivariate_normal.pdf(x[i, :], mu[j], sigma[j]) * phi[j]
             ll += np.log(temp)
-        # if prev_ll is not None:
-        #     assert ll > prev_ll, "Log-likelihood should increase."
-        ll_records.append(ll)
         if prev_ll is not None:
             assert ll - prev_ll > 1e-10
             print("Checked!")
         print("Iteration: {}, {}".format(it, ll))
         # *** END CODE HERE ***
-    # plt.plot(ll_records)
-    # plt.show()
     return w
 
 
@@ -249,14 +237,13 @@ def run_semi_supervised_em(x, x_tilde, z_tilde, w, phi, mu, sigma):
         # *** End ***
 
         for i in range(n):
-            denom = 0
+            denominator = 0
             for j in range(K):
-                num = multivariate_normal.pdf(
+                numerator = multivariate_normal.pdf(
                     x[i, :], mu[j], sigma[j]) * phi[j]
-                denom += num
-                w[i, j] = num
-            w[i, :] /= denom
-            assert np.abs(w[i, :].sum() - 1) < 1e-4
+                denominator += numerator
+                w[i, j] = numerator
+            w[i, :] /= denominator
 
         # (2) M-step: Update the model parameters phi, mu, and sigma
         # Update phi
@@ -269,7 +256,6 @@ def run_semi_supervised_em(x, x_tilde, z_tilde, w, phi, mu, sigma):
                 if z_tilde[i] == j:
                     phi_j += alpha
             new_phi[j] = phi_j / (n + alpha * n_tilde)
-        # phi[j] = (w.sum(axis=0)[j] + alpha * np.sum(z_tilde == j)) / (n + alpha * n_tilde)
         # Update mu
         new_mu = list()
         for j in range(K):
@@ -288,7 +274,6 @@ def run_semi_supervised_em(x, x_tilde, z_tilde, w, phi, mu, sigma):
             # muj = muj / (w.sum(axis=0)[j] + alpha * np.sum(z_tilde == j))
             new_mu.append(muj / denominator)
         # update sigma
-
         for j in range(K):
             const = w[:, j].sum() + alpha * np.sum(z_tilde == j)
             phi[j] = 1 / (n + alpha * n_tilde) * const
@@ -304,8 +289,6 @@ def run_semi_supervised_em(x, x_tilde, z_tilde, w, phi, mu, sigma):
                 sigma_j += alpha * int(z_tilde[i] == j) * (temp) @ (temp).T
             mu[j] = mu_j / const
             sigma[j] = sigma_j / const
-
-
         # new_sigma = list()
         # for j in range(K):
         #     # denominator = w.sum(axis=0)[j] + alpha * np.sum(z_tilde == j)
@@ -355,8 +338,6 @@ def run_semi_supervised_em(x, x_tilde, z_tilde, w, phi, mu, sigma):
         if prev_ll is not None:
             assert ll - prev_ll > 1e-10
             print("Checked!")
-        # if prev_ll is not None:
-        #     assert ll > prev_ll, "Log-likelihood should increase."
         print("Iteration: {}, {}".format(it, ll))
         # Hint: Make sure to include alpha in your calculation of ll.
         # Hint: For debugging, recall part (a). We showed that ll should be monotonically increasing.

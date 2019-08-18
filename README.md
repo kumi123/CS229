@@ -1,2 +1,6 @@
-# CS229
-CS229@Stanford University Summer 2019
+# CS229: Machine Learning
+
+## Summer 2019
+
+Course website: [http://cs229.stanford.edu/](http://cs229.stanford.edu/)
+

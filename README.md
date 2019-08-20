@@ -1,4 +1,4 @@
-# CS229: Machine Learning
+# Problem Sets CS229: Machine Learning
 
 ## Summer 2019
 
